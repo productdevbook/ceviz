@@ -3,6 +3,28 @@
   "type": "module",
   "version": "0.0.1",
   "description": "Lightning-fast performance analyzer for all npm packages - Ceviz ⚡",
+  "keywords": [
+    "performance",
+    "analyzer",
+    "profiler",
+    "optimization",
+    "complexity",
+    "memory-leak",
+    "async",
+    "lint",
+    "static-analysis"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/productdevbook/ceviz.git",
+    "directory": "packages/core"
+  },
+  "homepage": "https://github.com/productdevbook/ceviz#readme",
+  "bugs": {
+    "url": "https://github.com/productdevbook/ceviz/issues"
+  },
+  "author": "productdevbook",
+  "license": "MIT",
   "exports": {
     ".": {
       "types": "./dist/index.d.mts",
