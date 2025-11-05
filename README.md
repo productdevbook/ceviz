@@ -34,20 +34,38 @@ pnpm add -D @vitals/analyzer
 
 ## Usage
 
-### Analyze your project
+### Basic Analysis (User Code)
 
 ```bash
-# Analyze current directory
-vitals analyze
+# Using pnpm exec (in workspace)
+pnpm exec vitals analyze
+
+# Or using node directly
+node packages/vitals/dist/cli.mjs analyze
 
 # Analyze specific path
-vitals analyze ./my-project
+pnpm exec vitals analyze ./my-project
 
 # Output as JSON
-vitals analyze --json
+pnpm exec vitals analyze --json
 
 # Save JSON to file
-vitals analyze --json report.json
+pnpm exec vitals analyze --json report.json
+```
+
+### Framework Analysis (NEW!)
+
+Analyze framework code in node_modules to find performance issues:
+
+```bash
+# Analyze Nuxt core
+pnpm exec vitals analyze . --scan-deps --target-deps nuxt
+
+# Analyze multiple frameworks
+pnpm exec vitals analyze . --scan-deps --target-deps nuxt,vite,vue
+
+# Generate JSON report for GitHub issues
+pnpm exec vitals analyze . --scan-deps --target-deps nuxt --json nuxt-issues.json
 ```
 
 ### Example Output

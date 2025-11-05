@@ -21,17 +21,24 @@ program
   .description('Analyze a project for performance issues')
   .option('-j, --json [file]', 'Output as JSON (optionally to a file)')
   .option('--html [file]', 'Generate HTML report (coming soon)')
+  .option('--scan-deps', 'Analyze framework code in node_modules (for framework contributors)')
+  .option('--target-deps <packages>', 'Comma-separated list of packages to scan (e.g., nuxt,vite)', (val) => val.split(','))
   .action(async (projectPath: string = '.', options: any) => {
     const targetPath = resolve(process.cwd(), projectPath)
 
     const spinner = ora({
-      text: chalk.cyan('Scanning project...'),
+      text: options.scanDeps
+        ? chalk.cyan('Scanning framework code in node_modules...')
+        : chalk.cyan('Scanning project...'),
       color: 'cyan',
     }).start()
 
     try {
       // Run analysis
-      const result = await analyzeProject(targetPath)
+      const result = await analyzeProject(targetPath, {
+        scanDeps: options.scanDeps,
+        targetDeps: options.targetDeps,
+      })
 
       spinner.succeed(chalk.green('Analysis complete!'))
 

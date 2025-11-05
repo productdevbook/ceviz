@@ -1,19 +1,31 @@
-import { ProjectScanner } from './scanner.js'
+import { ProjectScanner, type ScanOptions } from './scanner.js'
 import { CodeAnalyzer } from './analyzer.js'
 import { allRules } from './rules/index.js'
 import type { AnalysisResult, ProjectContext } from './types.js'
 
 export * from './types.js'
 export { allRules } from './rules/index.js'
-export { ProjectScanner } from './scanner.js'
+export { ProjectScanner, type ScanOptions } from './scanner.js'
 export { CodeAnalyzer } from './analyzer.js'
+
+export interface AnalyzeOptions extends ScanOptions {
+  // Future options can be added here
+}
 
 /**
  * Main entry point for Vitals analyzer
+ *
+ * @param projectRoot - Path to project root
+ * @param options - Analysis options
+ *   - scanDeps: Set to true to analyze framework code in node_modules
+ *   - targetDeps: Array of package names to scan (e.g., ['nuxt', 'vite'])
  */
-export async function analyzeProject(projectRoot: string): Promise<AnalysisResult> {
+export async function analyzeProject(
+  projectRoot: string,
+  options: AnalyzeOptions = {}
+): Promise<AnalysisResult> {
   // 1. Scan project
-  const scanner = new ProjectScanner(projectRoot)
+  const scanner = new ProjectScanner(projectRoot, options)
   const projectContext = await scanner.detectProject()
   const files = await scanner.findSourceFiles()
 

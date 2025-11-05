@@ -3,11 +3,18 @@ import { readFileSync, statSync } from 'fs'
 import { join, relative } from 'path'
 import type { ProjectContext } from './types.js'
 
+export interface ScanOptions {
+  scanDeps?: boolean // Scan node_modules for framework analysis
+  targetDeps?: string[] // Specific packages to scan (e.g., ['nuxt', '@nuxt/*', 'vite'])
+}
+
 export class ProjectScanner {
   private projectRoot: string
+  private options: ScanOptions
 
-  constructor(projectRoot: string) {
+  constructor(projectRoot: string, options: ScanOptions = {}) {
     this.projectRoot = projectRoot
+    this.options = options
   }
 
   /**
@@ -53,11 +60,18 @@ export class ProjectScanner {
 
   /**
    * Find all source files to analyze
-   * EXCLUDES: node_modules, dist, .nuxt, .output, etc.
+   *
+   * Mode 1 (scanDeps=false): User code only - EXCLUDES node_modules
+   * Mode 2 (scanDeps=true): Framework analysis - INCLUDES specific node_modules packages
    */
   async findSourceFiles(): Promise<string[]> {
+    if (this.options.scanDeps) {
+      return this.findDependencyFiles()
+    }
+
+    // Default: User code only (exclude node_modules)
     const patterns = [
-      '**/*.{ts,tsx,js,jsx,vue}',
+      '**/*.{ts,tsx,js,jsx,mjs,cjs,vue}',
       '!node_modules/**',
       '!dist/**',
       '!.nuxt/**',
@@ -83,6 +97,67 @@ export class ProjectScanner {
     })
 
     return files
+  }
+
+  /**
+   * Find source files in specific node_modules packages
+   * For framework analysis (e.g., analyzing Nuxt core code)
+   */
+  private async findDependencyFiles(): Promise<string[]> {
+    const targetDeps = this.options.targetDeps || [
+      'nuxt',
+      '@nuxt/*',
+      'vite',
+      'rollup',
+      'vue',
+      'nitropack',
+    ]
+
+    const allFiles: string[] = []
+
+    for (const dep of targetDeps) {
+      const patterns: string[] = []
+
+      if (dep.includes('*')) {
+        // Scoped package with wildcard: @nuxt/*
+        const [scope, pkg] = dep.split('/')
+        patterns.push(
+          `node_modules/${scope}/${pkg}/**/*.{ts,tsx,js,jsx,mjs,cjs,vue}`,
+          `node_modules/.pnpm/${scope}+${pkg}@*/**/*.{ts,tsx,js,jsx,mjs,cjs,vue}`
+        )
+      } else {
+        // Regular package: nuxt, vite, etc.
+        patterns.push(
+          `node_modules/${dep}/**/*.{ts,tsx,js,jsx,mjs,cjs,vue}`,
+          `node_modules/.pnpm/${dep}@*/**/*.{ts,tsx,js,jsx,mjs,cjs,vue}`
+        )
+      }
+
+      for (const pattern of patterns) {
+        const files = await glob(pattern, {
+          cwd: this.projectRoot,
+          absolute: true,
+          ignore: [
+            '**/node_modules/**/node_modules/**', // Nested node_modules
+            '**/*.test.{ts,js,mjs,cjs}',
+            '**/*.spec.{ts,js,mjs,cjs}',
+            '**/*.d.ts', // Skip type definitions
+            '**/*.d.mts',
+            '**/*.d.cts',
+            '**/test/**',
+            '**/tests/**',
+            '**/__tests__/**',
+            '**/.nuxt/**',
+            // Note: We DON'T ignore dist/ for framework analysis
+            // Frameworks ship compiled code in dist/
+          ]
+        })
+
+        allFiles.push(...files)
+      }
+    }
+
+    return allFiles
   }
 
   /**

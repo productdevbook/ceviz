@@ -1,0 +1,670 @@
+{
+  "summary": {
+    "totalFiles": 6,
+    "analyzedFiles": 6,
+    "totalIssues": 9,
+    "critical": 7,
+    "warnings": 2,
+    "info": 0,
+    "score": 24,
+    "grade": "F"
+  },
+  "issues": [
+    {
+      "id": "nested-loops-0",
+      "rule": "nested-loops",
+      "severity": "critical",
+      "category": "cpu",
+      "location": {
+        "file": "/Users/code/Work/example/vitals/nuxt-test/middleware/auth.ts",
+        "line": 0,
+        "column": 0
+      },
+      "message": "Nested loop detected (O(n²) complexity)",
+      "description": "This code has 2 nested loops, resulting in O(n²) time complexity. For large datasets, this can cause severe performance issues.",
+      "impact": {
+        "type": "cpu",
+        "level": "high",
+        "complexity": "O(n²)",
+        "estimate": "100ms → 10s for 1000 items"
+      },
+      "suggestion": {
+        "fix": "Use Map/Set for O(1) lookups instead of nested loops",
+        "example": "// Instead of:\nfor (const user of users) {\n  for (const post of posts) {\n    if (post.userId === user.id) { ... }\n  }\n}\n\n// Use:\nconst postsByUser = new Map()\nfor (const post of posts) {\n  if (!postsByUser.has(post.userId)) {\n    postsByUser.set(post.userId, [])\n  }\n  postsByUser.get(post.userId).push(post)\n}\nfor (const user of users) {\n  const userPosts = postsByUser.get(user.id) || []\n  // ...\n}",
+        "docs": "https://vitals.dev/rules/nested-loops"
+      },
+      "autoFixable": false,
+      "codeSnippet": {
+        "before": "",
+        "context": [
+          "// Nuxt middleware with blocking operations",
+          ""
+        ]
+      }
+    },
+    {
+      "id": "sync-file-op-0",
+      "rule": "sync-file-operations",
+      "severity": "critical",
+      "category": "io",
+      "location": {
+        "file": "/Users/code/Work/example/vitals/nuxt-test/middleware/auth.ts",
+        "line": 0,
+        "column": 0
+      },
+      "message": "pbkdf2Sync() blocks the event loop",
+      "description": "Synchronous operations like pbkdf2Sync() block the entire Node.js event loop. During this time, the server cannot handle ANY other requests. This is especially critical in API routes and middleware.",
+      "impact": {
+        "type": "io",
+        "level": "extreme",
+        "blocking": true,
+        "estimate": "100-500ms block per call"
+      },
+      "suggestion": {
+        "fix": "Use async version: pbkdf2()",
+        "example": "// Instead of:\nconst data = fs.pbkdf2Sync('file.txt')\n\n// Use:\nconst data = await fs.promises.pbkdf2('file.txt')\n// or\nfs.pbkdf2('file.txt', (err, data) => {...})",
+        "docs": "https://vitals.dev/rules/sync-file-operations"
+      },
+      "autoFixable": false,
+      "codeSnippet": {
+        "before": "",
+        "context": [
+          "// Nuxt middleware with blocking operations",
+          ""
+        ]
+      }
+    },
+    {
+      "id": "sequential-requests-0",
+      "rule": "sequential-requests",
+      "severity": "warning",
+      "category": "io",
+      "location": {
+        "file": "/Users/code/Work/example/vitals/nuxt-test/middleware/auth.ts",
+        "line": 0,
+        "column": 0
+      },
+      "message": "3 sequential await calls create waterfall",
+      "description": "These 3 await statements run sequentially, but appear to be independent. Running them in parallel with Promise.all() would be faster.",
+      "impact": {
+        "type": "io",
+        "level": "medium",
+        "estimate": "3x slower than necessary"
+      },
+      "suggestion": {
+        "fix": "Use Promise.all() to run these operations in parallel",
+        "example": "// Instead of:\nconst data1 = await fetch('/api/1')\nconst data2 = await fetch('/api/2')\nconst data3 = await fetch('/api/3')\n\n// Use:\nconst [data1, data2, data3] = await Promise.all([\n  fetch('/api/1'),\n  fetch('/api/2'),\n  fetch('/api/3')\n])",
+        "docs": "https://vitals.dev/rules/sequential-requests"
+      },
+      "autoFixable": false,
+      "codeSnippet": {
+        "before": "",
+        "context": []
+      }
+    },
+    {
+      "id": "nested-loops-0",
+      "rule": "nested-loops",
+      "severity": "critical",
+      "category": "cpu",
+      "location": {
+        "file": "/Users/code/Work/example/vitals/nuxt-test/composables/useData.ts",
+        "line": 0,
+        "column": 0
+      },
+      "message": "Nested loop detected (O(n²) complexity)",
+      "description": "This code has 2 nested loops, resulting in O(n²) time complexity. For large datasets, this can cause severe performance issues.",
+      "impact": {
+        "type": "cpu",
+        "level": "high",
+        "complexity": "O(n²)",
+        "estimate": "100ms → 10s for 1000 items"
+      },
+      "suggestion": {
+        "fix": "Use Map/Set for O(1) lookups instead of nested loops",
+        "example": "// Instead of:\nfor (const user of users) {\n  for (const post of posts) {\n    if (post.userId === user.id) { ... }\n  }\n}\n\n// Use:\nconst postsByUser = new Map()\nfor (const post of posts) {\n  if (!postsByUser.has(post.userId)) {\n    postsByUser.set(post.userId, [])\n  }\n  postsByUser.get(post.userId).push(post)\n}\nfor (const user of users) {\n  const userPosts = postsByUser.get(user.id) || []\n  // ...\n}",
+        "docs": "https://vitals.dev/rules/nested-loops"
+      },
+      "autoFixable": false,
+      "codeSnippet": {
+        "before": "",
+        "context": [
+          "// Nuxt composable with performance issues",
+          ""
+        ]
+      }
+    },
+    {
+      "id": "array-find-in-loop-0",
+      "rule": "array-find-in-loop",
+      "severity": "critical",
+      "category": "cpu",
+      "location": {
+        "file": "/Users/code/Work/example/vitals/nuxt-test/composables/useData.ts",
+        "line": 0,
+        "column": 0
+      },
+      "message": "Array.filter() inside loop creates O(n*m) complexity",
+      "description": "Using filter() inside a loop causes the array to be searched on every iteration, resulting in O(n*m) time complexity. This can be extremely slow for large datasets.",
+      "impact": {
+        "type": "cpu",
+        "level": "high",
+        "complexity": "O(n*m)",
+        "estimate": "10ms → 5s for 1000x1000 items"
+      },
+      "suggestion": {
+        "fix": "Convert array to Map/Set before the loop for O(1) lookups",
+        "example": "// Instead of:\nfor (const item of items) {\n  const match = array.filter(x => x.id === item.id)\n}\n\n// Use:\nconst lookup = new Map(array.map(x => [x.id, x]))\nfor (const item of items) {\n  const match = lookup.get(item.id)\n}",
+        "docs": "https://vitals.dev/rules/array-find-in-loop"
+      },
+      "autoFixable": false,
+      "codeSnippet": {
+        "before": "",
+        "context": [
+          "// Nuxt composable with performance issues",
+          ""
+        ]
+      }
+    },
+    {
+      "id": "array-find-in-loop-0",
+      "rule": "array-find-in-loop",
+      "severity": "critical",
+      "category": "cpu",
+      "location": {
+        "file": "/Users/code/Work/example/vitals/nuxt-test/composables/useData.ts",
+        "line": 0,
+        "column": 0
+      },
+      "message": "Array.find() inside loop creates O(n*m) complexity",
+      "description": "Using find() inside a loop causes the array to be searched on every iteration, resulting in O(n*m) time complexity. This can be extremely slow for large datasets.",
+      "impact": {
+        "type": "cpu",
+        "level": "high",
+        "complexity": "O(n*m)",
+        "estimate": "10ms → 5s for 1000x1000 items"
+      },
+      "suggestion": {
+        "fix": "Convert array to Map/Set before the loop for O(1) lookups",
+        "example": "// Instead of:\nfor (const item of items) {\n  const match = array.find(x => x.id === item.id)\n}\n\n// Use:\nconst lookup = new Map(array.map(x => [x.id, x]))\nfor (const item of items) {\n  const match = lookup.get(item.id)\n}",
+        "docs": "https://vitals.dev/rules/array-find-in-loop"
+      },
+      "autoFixable": false,
+      "codeSnippet": {
+        "before": "",
+        "context": [
+          "// Nuxt composable with performance issues",
+          ""
+        ]
+      }
+    },
+    {
+      "id": "nested-loops-0",
+      "rule": "nested-loops",
+      "severity": "critical",
+      "category": "cpu",
+      "location": {
+        "file": "/Users/code/Work/example/vitals/nuxt-test/server/api/users.ts",
+        "line": 0,
+        "column": 0
+      },
+      "message": "Nested loop detected (O(n²) complexity)",
+      "description": "This code has 2 nested loops, resulting in O(n²) time complexity. For large datasets, this can cause severe performance issues.",
+      "impact": {
+        "type": "cpu",
+        "level": "high",
+        "complexity": "O(n²)",
+        "estimate": "100ms → 10s for 1000 items"
+      },
+      "suggestion": {
+        "fix": "Use Map/Set for O(1) lookups instead of nested loops",
+        "example": "// Instead of:\nfor (const user of users) {\n  for (const post of posts) {\n    if (post.userId === user.id) { ... }\n  }\n}\n\n// Use:\nconst postsByUser = new Map()\nfor (const post of posts) {\n  if (!postsByUser.has(post.userId)) {\n    postsByUser.set(post.userId, [])\n  }\n  postsByUser.get(post.userId).push(post)\n}\nfor (const user of users) {\n  const userPosts = postsByUser.get(user.id) || []\n  // ...\n}",
+        "docs": "https://vitals.dev/rules/nested-loops"
+      },
+      "autoFixable": false,
+      "codeSnippet": {
+        "before": "",
+        "context": [
+          "// Nuxt API route with performance issues",
+          ""
+        ]
+      }
+    },
+    {
+      "id": "sync-file-op-0",
+      "rule": "sync-file-operations",
+      "severity": "critical",
+      "category": "io",
+      "location": {
+        "file": "/Users/code/Work/example/vitals/nuxt-test/server/api/users.ts",
+        "line": 0,
+        "column": 0
+      },
+      "message": "readFileSync() blocks the event loop",
+      "description": "Synchronous operations like readFileSync() block the entire Node.js event loop. During this time, the server cannot handle ANY other requests. This is especially critical in API routes and middleware.",
+      "impact": {
+        "type": "io",
+        "level": "extreme",
+        "blocking": true,
+        "estimate": "50-200ms block"
+      },
+      "suggestion": {
+        "fix": "Use async version: readFile()",
+        "example": "// Instead of:\nconst data = fs.readFileSync('file.txt')\n\n// Use:\nconst data = await fs.promises.readFile('file.txt')\n// or\nfs.readFile('file.txt', (err, data) => {...})",
+        "docs": "https://vitals.dev/rules/sync-file-operations"
+      },
+      "autoFixable": false,
+      "codeSnippet": {
+        "before": "",
+        "context": [
+          "// Nuxt API route with performance issues",
+          ""
+        ]
+      }
+    },
+    {
+      "id": "sequential-requests-0",
+      "rule": "sequential-requests",
+      "severity": "warning",
+      "category": "io",
+      "location": {
+        "file": "/Users/code/Work/example/vitals/nuxt-test/server/api/users.ts",
+        "line": 0,
+        "column": 0
+      },
+      "message": "3 sequential await calls create waterfall",
+      "description": "These 3 await statements run sequentially, but appear to be independent. Running them in parallel with Promise.all() would be faster.",
+      "impact": {
+        "type": "io",
+        "level": "medium",
+        "estimate": "3x slower than necessary"
+      },
+      "suggestion": {
+        "fix": "Use Promise.all() to run these operations in parallel",
+        "example": "// Instead of:\nconst data1 = await fetch('/api/1')\nconst data2 = await fetch('/api/2')\nconst data3 = await fetch('/api/3')\n\n// Use:\nconst [data1, data2, data3] = await Promise.all([\n  fetch('/api/1'),\n  fetch('/api/2'),\n  fetch('/api/3')\n])",
+        "docs": "https://vitals.dev/rules/sequential-requests"
+      },
+      "autoFixable": false,
+      "codeSnippet": {
+        "before": "",
+        "context": []
+      }
+    }
+  ],
+  "metrics": {
+    "cpu": {
+      "worstComplexity": "O(1)",
+      "averageComplexity": "O(n)",
+      "hotspots": [
+        {
+          "file": "/Users/code/Work/example/vitals/nuxt-test/middleware/auth.ts",
+          "line": 0,
+          "column": 0
+        },
+        {
+          "file": "/Users/code/Work/example/vitals/nuxt-test/composables/useData.ts",
+          "line": 0,
+          "column": 0
+        },
+        {
+          "file": "/Users/code/Work/example/vitals/nuxt-test/composables/useData.ts",
+          "line": 0,
+          "column": 0
+        },
+        {
+          "file": "/Users/code/Work/example/vitals/nuxt-test/composables/useData.ts",
+          "line": 0,
+          "column": 0
+        },
+        {
+          "file": "/Users/code/Work/example/vitals/nuxt-test/server/api/users.ts",
+          "line": 0,
+          "column": 0
+        }
+      ]
+    },
+    "memory": {
+      "estimatedBaseline": "13KB",
+      "leaks": 0,
+      "bloatLevel": "low"
+    },
+    "bundle": {
+      "size": 4569,
+      "potentialSavings": 0,
+      "heavyDeps": []
+    },
+    "io": {
+      "blockingOps": 2,
+      "waterfalls": 2
+    }
+  },
+  "files": [
+    {
+      "path": "/Users/code/Work/example/vitals/nuxt-test/nuxt.config.ts",
+      "size": 157,
+      "lines": 6,
+      "complexity": "O(1)",
+      "issues": []
+    },
+    {
+      "path": "/Users/code/Work/example/vitals/nuxt-test/middleware/auth.ts",
+      "size": 981,
+      "lines": 32,
+      "complexity": "O(1)",
+      "issues": [
+        {
+          "id": "nested-loops-0",
+          "rule": "nested-loops",
+          "severity": "critical",
+          "category": "cpu",
+          "location": {
+            "file": "/Users/code/Work/example/vitals/nuxt-test/middleware/auth.ts",
+            "line": 0,
+            "column": 0
+          },
+          "message": "Nested loop detected (O(n²) complexity)",
+          "description": "This code has 2 nested loops, resulting in O(n²) time complexity. For large datasets, this can cause severe performance issues.",
+          "impact": {
+            "type": "cpu",
+            "level": "high",
+            "complexity": "O(n²)",
+            "estimate": "100ms → 10s for 1000 items"
+          },
+          "suggestion": {
+            "fix": "Use Map/Set for O(1) lookups instead of nested loops",
+            "example": "// Instead of:\nfor (const user of users) {\n  for (const post of posts) {\n    if (post.userId === user.id) { ... }\n  }\n}\n\n// Use:\nconst postsByUser = new Map()\nfor (const post of posts) {\n  if (!postsByUser.has(post.userId)) {\n    postsByUser.set(post.userId, [])\n  }\n  postsByUser.get(post.userId).push(post)\n}\nfor (const user of users) {\n  const userPosts = postsByUser.get(user.id) || []\n  // ...\n}",
+            "docs": "https://vitals.dev/rules/nested-loops"
+          },
+          "autoFixable": false,
+          "codeSnippet": {
+            "before": "",
+            "context": [
+              "// Nuxt middleware with blocking operations",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "sync-file-op-0",
+          "rule": "sync-file-operations",
+          "severity": "critical",
+          "category": "io",
+          "location": {
+            "file": "/Users/code/Work/example/vitals/nuxt-test/middleware/auth.ts",
+            "line": 0,
+            "column": 0
+          },
+          "message": "pbkdf2Sync() blocks the event loop",
+          "description": "Synchronous operations like pbkdf2Sync() block the entire Node.js event loop. During this time, the server cannot handle ANY other requests. This is especially critical in API routes and middleware.",
+          "impact": {
+            "type": "io",
+            "level": "extreme",
+            "blocking": true,
+            "estimate": "100-500ms block per call"
+          },
+          "suggestion": {
+            "fix": "Use async version: pbkdf2()",
+            "example": "// Instead of:\nconst data = fs.pbkdf2Sync('file.txt')\n\n// Use:\nconst data = await fs.promises.pbkdf2('file.txt')\n// or\nfs.pbkdf2('file.txt', (err, data) => {...})",
+            "docs": "https://vitals.dev/rules/sync-file-operations"
+          },
+          "autoFixable": false,
+          "codeSnippet": {
+            "before": "",
+            "context": [
+              "// Nuxt middleware with blocking operations",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "sequential-requests-0",
+          "rule": "sequential-requests",
+          "severity": "warning",
+          "category": "io",
+          "location": {
+            "file": "/Users/code/Work/example/vitals/nuxt-test/middleware/auth.ts",
+            "line": 0,
+            "column": 0
+          },
+          "message": "3 sequential await calls create waterfall",
+          "description": "These 3 await statements run sequentially, but appear to be independent. Running them in parallel with Promise.all() would be faster.",
+          "impact": {
+            "type": "io",
+            "level": "medium",
+            "estimate": "3x slower than necessary"
+          },
+          "suggestion": {
+            "fix": "Use Promise.all() to run these operations in parallel",
+            "example": "// Instead of:\nconst data1 = await fetch('/api/1')\nconst data2 = await fetch('/api/2')\nconst data3 = await fetch('/api/3')\n\n// Use:\nconst [data1, data2, data3] = await Promise.all([\n  fetch('/api/1'),\n  fetch('/api/2'),\n  fetch('/api/3')\n])",
+            "docs": "https://vitals.dev/rules/sequential-requests"
+          },
+          "autoFixable": false,
+          "codeSnippet": {
+            "before": "",
+            "context": []
+          }
+        }
+      ]
+    },
+    {
+      "path": "/Users/code/Work/example/vitals/nuxt-test/composables/useData.ts",
+      "size": 1318,
+      "lines": 58,
+      "complexity": "O(1)",
+      "issues": [
+        {
+          "id": "nested-loops-0",
+          "rule": "nested-loops",
+          "severity": "critical",
+          "category": "cpu",
+          "location": {
+            "file": "/Users/code/Work/example/vitals/nuxt-test/composables/useData.ts",
+            "line": 0,
+            "column": 0
+          },
+          "message": "Nested loop detected (O(n²) complexity)",
+          "description": "This code has 2 nested loops, resulting in O(n²) time complexity. For large datasets, this can cause severe performance issues.",
+          "impact": {
+            "type": "cpu",
+            "level": "high",
+            "complexity": "O(n²)",
+            "estimate": "100ms → 10s for 1000 items"
+          },
+          "suggestion": {
+            "fix": "Use Map/Set for O(1) lookups instead of nested loops",
+            "example": "// Instead of:\nfor (const user of users) {\n  for (const post of posts) {\n    if (post.userId === user.id) { ... }\n  }\n}\n\n// Use:\nconst postsByUser = new Map()\nfor (const post of posts) {\n  if (!postsByUser.has(post.userId)) {\n    postsByUser.set(post.userId, [])\n  }\n  postsByUser.get(post.userId).push(post)\n}\nfor (const user of users) {\n  const userPosts = postsByUser.get(user.id) || []\n  // ...\n}",
+            "docs": "https://vitals.dev/rules/nested-loops"
+          },
+          "autoFixable": false,
+          "codeSnippet": {
+            "before": "",
+            "context": [
+              "// Nuxt composable with performance issues",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "array-find-in-loop-0",
+          "rule": "array-find-in-loop",
+          "severity": "critical",
+          "category": "cpu",
+          "location": {
+            "file": "/Users/code/Work/example/vitals/nuxt-test/composables/useData.ts",
+            "line": 0,
+            "column": 0
+          },
+          "message": "Array.filter() inside loop creates O(n*m) complexity",
+          "description": "Using filter() inside a loop causes the array to be searched on every iteration, resulting in O(n*m) time complexity. This can be extremely slow for large datasets.",
+          "impact": {
+            "type": "cpu",
+            "level": "high",
+            "complexity": "O(n*m)",
+            "estimate": "10ms → 5s for 1000x1000 items"
+          },
+          "suggestion": {
+            "fix": "Convert array to Map/Set before the loop for O(1) lookups",
+            "example": "// Instead of:\nfor (const item of items) {\n  const match = array.filter(x => x.id === item.id)\n}\n\n// Use:\nconst lookup = new Map(array.map(x => [x.id, x]))\nfor (const item of items) {\n  const match = lookup.get(item.id)\n}",
+            "docs": "https://vitals.dev/rules/array-find-in-loop"
+          },
+          "autoFixable": false,
+          "codeSnippet": {
+            "before": "",
+            "context": [
+              "// Nuxt composable with performance issues",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "array-find-in-loop-0",
+          "rule": "array-find-in-loop",
+          "severity": "critical",
+          "category": "cpu",
+          "location": {
+            "file": "/Users/code/Work/example/vitals/nuxt-test/composables/useData.ts",
+            "line": 0,
+            "column": 0
+          },
+          "message": "Array.find() inside loop creates O(n*m) complexity",
+          "description": "Using find() inside a loop causes the array to be searched on every iteration, resulting in O(n*m) time complexity. This can be extremely slow for large datasets.",
+          "impact": {
+            "type": "cpu",
+            "level": "high",
+            "complexity": "O(n*m)",
+            "estimate": "10ms → 5s for 1000x1000 items"
+          },
+          "suggestion": {
+            "fix": "Convert array to Map/Set before the loop for O(1) lookups",
+            "example": "// Instead of:\nfor (const item of items) {\n  const match = array.find(x => x.id === item.id)\n}\n\n// Use:\nconst lookup = new Map(array.map(x => [x.id, x]))\nfor (const item of items) {\n  const match = lookup.get(item.id)\n}",
+            "docs": "https://vitals.dev/rules/array-find-in-loop"
+          },
+          "autoFixable": false,
+          "codeSnippet": {
+            "before": "",
+            "context": [
+              "// Nuxt composable with performance issues",
+              ""
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "path": "/Users/code/Work/example/vitals/nuxt-test/components/DataTable.vue",
+      "size": 1267,
+      "lines": 58,
+      "complexity": "O(1)",
+      "issues": []
+    },
+    {
+      "path": "/Users/code/Work/example/vitals/nuxt-test/app/app.vue",
+      "size": 87,
+      "lines": 7,
+      "complexity": "O(1)",
+      "issues": []
+    },
+    {
+      "path": "/Users/code/Work/example/vitals/nuxt-test/server/api/users.ts",
+      "size": 759,
+      "lines": 31,
+      "complexity": "O(1)",
+      "issues": [
+        {
+          "id": "nested-loops-0",
+          "rule": "nested-loops",
+          "severity": "critical",
+          "category": "cpu",
+          "location": {
+            "file": "/Users/code/Work/example/vitals/nuxt-test/server/api/users.ts",
+            "line": 0,
+            "column": 0
+          },
+          "message": "Nested loop detected (O(n²) complexity)",
+          "description": "This code has 2 nested loops, resulting in O(n²) time complexity. For large datasets, this can cause severe performance issues.",
+          "impact": {
+            "type": "cpu",
+            "level": "high",
+            "complexity": "O(n²)",
+            "estimate": "100ms → 10s for 1000 items"
+          },
+          "suggestion": {
+            "fix": "Use Map/Set for O(1) lookups instead of nested loops",
+            "example": "// Instead of:\nfor (const user of users) {\n  for (const post of posts) {\n    if (post.userId === user.id) { ... }\n  }\n}\n\n// Use:\nconst postsByUser = new Map()\nfor (const post of posts) {\n  if (!postsByUser.has(post.userId)) {\n    postsByUser.set(post.userId, [])\n  }\n  postsByUser.get(post.userId).push(post)\n}\nfor (const user of users) {\n  const userPosts = postsByUser.get(user.id) || []\n  // ...\n}",
+            "docs": "https://vitals.dev/rules/nested-loops"
+          },
+          "autoFixable": false,
+          "codeSnippet": {
+            "before": "",
+            "context": [
+              "// Nuxt API route with performance issues",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "sync-file-op-0",
+          "rule": "sync-file-operations",
+          "severity": "critical",
+          "category": "io",
+          "location": {
+            "file": "/Users/code/Work/example/vitals/nuxt-test/server/api/users.ts",
+            "line": 0,
+            "column": 0
+          },
+          "message": "readFileSync() blocks the event loop",
+          "description": "Synchronous operations like readFileSync() block the entire Node.js event loop. During this time, the server cannot handle ANY other requests. This is especially critical in API routes and middleware.",
+          "impact": {
+            "type": "io",
+            "level": "extreme",
+            "blocking": true,
+            "estimate": "50-200ms block"
+          },
+          "suggestion": {
+            "fix": "Use async version: readFile()",
+            "example": "// Instead of:\nconst data = fs.readFileSync('file.txt')\n\n// Use:\nconst data = await fs.promises.readFile('file.txt')\n// or\nfs.readFile('file.txt', (err, data) => {...})",
+            "docs": "https://vitals.dev/rules/sync-file-operations"
+          },
+          "autoFixable": false,
+          "codeSnippet": {
+            "before": "",
+            "context": [
+              "// Nuxt API route with performance issues",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "sequential-requests-0",
+          "rule": "sequential-requests",
+          "severity": "warning",
+          "category": "io",
+          "location": {
+            "file": "/Users/code/Work/example/vitals/nuxt-test/server/api/users.ts",
+            "line": 0,
+            "column": 0
+          },
+          "message": "3 sequential await calls create waterfall",
+          "description": "These 3 await statements run sequentially, but appear to be independent. Running them in parallel with Promise.all() would be faster.",
+          "impact": {
+            "type": "io",
+            "level": "medium",
+            "estimate": "3x slower than necessary"
+          },
+          "suggestion": {
+            "fix": "Use Promise.all() to run these operations in parallel",
+            "example": "// Instead of:\nconst data1 = await fetch('/api/1')\nconst data2 = await fetch('/api/2')\nconst data3 = await fetch('/api/3')\n\n// Use:\nconst [data1, data2, data3] = await Promise.all([\n  fetch('/api/1'),\n  fetch('/api/2'),\n  fetch('/api/3')\n])",
+            "docs": "https://vitals.dev/rules/sequential-requests"
+          },
+          "autoFixable": false,
+          "codeSnippet": {
+            "before": "",
+            "context": []
+          }
+        }
+      ]
+    }
+  ],
+  "timestamp": "2025-11-05T16:02:32.967Z",
+  "duration": 2
+}

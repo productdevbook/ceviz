@@ -1,12 +1,16 @@
 {
-  "name": "vitals",
+  "name": "vitals-monorepo",
   "version": "0.0.0",
+  "private": true,
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "pnpm --filter @vitals/analyzer build",
+    "dev": "pnpm --filter @vitals/analyzer dev",
+    "analyze": "pnpm --filter @vitals/analyzer build && node packages/vitals/dist/cli.mjs analyze",
+    "test": "pnpm --filter @vitals/analyzer test"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "packageManager": "pnpm@10.20.0"
 }
