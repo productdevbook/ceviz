@@ -1,7 +1,7 @@
 {
   "name": "ceviz",
   "type": "module",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Lightning-fast performance analyzer for all npm packages - Ceviz ⚡",
   "author": "productdevbook",
   "license": "MIT",
