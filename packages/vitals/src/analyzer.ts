@@ -25,7 +25,7 @@ export class CodeAnalyzer {
         sourceType: 'module',
       })
     }
-    catch (error) {
+    catch {
       // Parse error - skip file
       return {
         path: filePath,

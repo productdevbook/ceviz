@@ -19,7 +19,7 @@ export const memoryLeakIntervalRule: Rule = {
     const intervals: Set<string> = new Set()
     const cleared: Set<string> = new Set()
 
-    const checkNode = (node: any, parent: any = null, scope: string = 'global'): void => {
+    const checkNode = (node: any, _parent: any = null, scope: string = 'global'): void => {
       if (!node || typeof node !== 'object')
         return
 

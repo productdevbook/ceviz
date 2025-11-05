@@ -15,7 +15,7 @@ export const sequentialRequestsRule: Rule = {
     const issues: Issue[] = []
     const { ast, filePath, code } = context
 
-    const checkNode = (node: any, parent: any = null): void => {
+    const checkNode = (node: any, _parent: any = null): void => {
       if (!node || typeof node !== 'object')
         return
 
