@@ -1,6 +1,6 @@
-# Viper Plugin API
+# Ceviz Plugin API
 
-Viper supports a powerful plugin system that allows you to:
+Ceviz supports a powerful plugin system that allows you to:
 - Create custom performance rules
 - Add custom reporters
 - Hook into the analysis lifecycle
@@ -11,8 +11,8 @@ Viper supports a powerful plugin system that allows you to:
 ### 1. Create a Plugin
 
 ```typescript
-// viper-plugins/my-plugin.ts
-import type { ViperPlugin, Rule, RuleContext, Issue } from 'viper'
+// ceviz-plugins/my-plugin.ts
+import type { CevizPlugin, Rule, RuleContext, Issue } from 'ceviz'
 
 const myCustomRule: Rule = {
   id: 'my-custom-rule',
@@ -28,7 +28,7 @@ const myCustomRule: Rule = {
   },
 }
 
-const myPlugin: ViperPlugin = {
+const myPlugin: CevizPlugin = {
   name: 'my-plugin',
   version: '1.0.0',
   rules: [myCustomRule],
@@ -39,19 +39,19 @@ export default myPlugin
 
 ### 2. Use the Plugin
 
-Create `viper.config.ts`:
+Create `ceviz.config.ts`:
 
 ```typescript
-// viper.config.ts
-import { defineConfig } from 'viper'
-import myPlugin from './viper-plugins/my-plugin.js'
+// ceviz.config.ts
+import { defineConfig } from 'ceviz'
+import myPlugin from './ceviz-plugins/my-plugin.js'
 
 export default defineConfig({
   plugins: [
     myPlugin,
     // Or load from npm:
-    'viper-plugin-vue',
-    'viper-plugin-react',
+    'ceviz-plugin-vue',
+    'ceviz-plugin-react',
   ],
 
   // Configure rules
@@ -70,13 +70,13 @@ TypeScript will provide full autocomplete and type checking!
 ### 3. Run Analysis
 
 ```bash
-pnpm exec viper analyze --config viper.config.ts
+pnpm exec ceviz analyze --config ceviz.config.ts
 ```
 
 ## Plugin Interface
 
 ```typescript
-interface ViperPlugin {
+interface CevizPlugin {
   name: string
   version?: string
   rules?: Rule[]
@@ -94,7 +94,7 @@ interface PluginContext {
   addRule: (rule: Rule) => void
   addReporter: (reporter: Reporter) => void
   hooks: Hookable // See Hooks section
-  config: ViperConfig
+  config: CevizConfig
   projectContext: ProjectContext
 }
 ```
@@ -205,27 +205,27 @@ const expensiveRegexRule: Rule = {
 
 ## Hooks System
 
-Viper uses [unjs/hookable](https://github.com/unjs/hookable) for lifecycle hooks.
+Ceviz uses [unjs/hookable](https://github.com/unjs/hookable) for lifecycle hooks.
 
 ### Available Hooks
 
 ```typescript
-interface ViperHooks {
+interface CevizHooks {
   'plugin:loading': (pluginName: string) => void
-  'plugin:loaded': (plugin: ViperPlugin) => void
+  'plugin:loaded': (plugin: CevizPlugin) => void
   'rule:added': (rule: Rule) => void
   'reporter:added': (reporter: Reporter) => void
   'analysis:start': (context: ProjectContext) => void
   'analysis:file': (filePath: string) => void
   'analysis:complete': (issuesCount: number) => void
-  'config:resolved': (config: ViperConfig) => void
+  'config:resolved': (config: CevizConfig) => void
 }
 ```
 
 ### Using Hooks
 
 ```typescript
-const myPlugin: ViperPlugin = {
+const myPlugin: CevizPlugin = {
   name: 'my-plugin',
   setup: async (context) => {
     // Listen to hooks
@@ -247,12 +247,12 @@ const myPlugin: ViperPlugin = {
 ## Creating Custom Reporters
 
 ```typescript
-import type { Reporter, AnalysisResult } from 'viper'
+import type { Reporter, AnalysisResult } from 'ceviz'
 
 const markdownReporter: Reporter = {
   name: 'markdown',
   report: async (result: AnalysisResult, outputPath?: string) => {
-    const markdown = `# Viper Report
+    const markdown = `# Ceviz Report
 
 ## Summary
 - Files analyzed: ${result.summary.analyzedFiles}
@@ -278,7 +278,7 @@ ${result.issues.map(issue => `
   },
 }
 
-const myPlugin: ViperPlugin = {
+const myPlugin: CevizPlugin = {
   name: 'my-plugin',
   reporters: [markdownReporter],
 }
@@ -298,19 +298,19 @@ When clicked, VSCode will open the file at the exact line and column.
 
 ## Example Plugins
 
-See [examples/custom-rule-plugin.ts](packages/viper/examples/custom-rule-plugin.ts) for a complete example.
+See [examples/custom-rule-plugin.ts](packages/vitals/examples/custom-rule-plugin.ts) for a complete example.
 
 ## Publishing Plugins
 
 To publish a plugin to npm:
 
-1. Name it with `viper-plugin-` prefix: `viper-plugin-vue`
-2. Export a default ViperPlugin object
+1. Name it with `ceviz-plugin-` prefix: `ceviz-plugin-vue`
+2. Export a default CevizPlugin object
 3. Publish to npm
 
 ```json
 {
-  "name": "viper-plugin-vue",
+  "name": "ceviz-plugin-vue",
   "version": "1.0.0",
   "main": "dist/index.js",
   "type": "module"
@@ -320,22 +320,22 @@ To publish a plugin to npm:
 Users can then install and use it:
 
 ```bash
-pnpm add -D viper-plugin-vue
+pnpm add -D ceviz-plugin-vue
 ```
 
 ```typescript
-// viper.config.ts
+// ceviz.config.ts
 export default defineConfig({
-  plugins: ['viper-plugin-vue']
+  plugins: ['ceviz-plugin-vue']
 })
 ```
 
 ## Community Plugins
 
-- `viper-plugin-vue` - Vue 3 specific rules
-- `viper-plugin-react` - React specific rules
-- `viper-plugin-nuxt` - Nuxt 3 specific rules
-- `viper-plugin-nextjs` - Next.js specific rules
+- `ceviz-plugin-vue` - Vue 3 specific rules
+- `ceviz-plugin-react` - React specific rules
+- `ceviz-plugin-nuxt` - Nuxt 3 specific rules
+- `ceviz-plugin-nextjs` - Next.js specific rules
 
 _(Coming soon - contribute yours!)_
 

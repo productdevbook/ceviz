@@ -1,14 +1,14 @@
-import { defineConfig } from 'viper'
+import { defineConfig } from 'ceviz'
 
 export default defineConfig({
   // Load custom plugins
   plugins: [
     // From npm
-    // 'viper-plugin-vue',
-    // 'viper-plugin-react',
+    // 'ceviz-plugin-vue',
+    // 'ceviz-plugin-react',
 
     // From local file
-    // './viper-plugins/my-custom-plugin.js',
+    // './ceviz-plugins/my-custom-plugin.js',
   ],
 
   // Configure rules

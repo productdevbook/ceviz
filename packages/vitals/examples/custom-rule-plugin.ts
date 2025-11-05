@@ -1,13 +1,13 @@
 /**
- * Example Viper Plugin
+ * Example Ceviz Plugin
  *
- * This shows how to create custom rules for Viper analyzer.
+ * This shows how to create custom rules for Ceviz analyzer.
  *
  * Usage:
- * 1. Create viper.config.ts in your project root:
+ * 1. Create ceviz.config.ts in your project root:
  *
- * import { defineConfig } from 'viper'
- * import customPlugin from './viper-plugins/my-plugin.js'
+ * import { defineConfig } from 'ceviz'
+ * import customPlugin from './ceviz-plugins/my-plugin.js'
  *
  * export default defineConfig({
  *   plugins: [customPlugin]
@@ -16,11 +16,11 @@
  * 2. Or load from npm package:
  *
  * export default defineConfig({
- *   plugins: ['viper-plugin-vue', 'viper-plugin-react']
+ *   plugins: ['ceviz-plugin-vue', 'ceviz-plugin-react']
  * })
  */
 
-import type { ViperPlugin, Rule, RuleContext, Issue } from '../src/types.js'
+import type { CevizPlugin, Rule, RuleContext, Issue } from '../src/types.js'
 
 // Example: Detect console.log() in production code
 const noConsoleLogRule: Rule = {
@@ -155,8 +155,8 @@ const noTodoCommentsRule: Rule = {
 }
 
 // Export the plugin
-const customRulePlugin: ViperPlugin = {
-  name: 'viper-custom-rules',
+const customRulePlugin: CevizPlugin = {
+  name: 'ceviz-custom-rules',
   version: '1.0.0',
 
   // Provide custom rules

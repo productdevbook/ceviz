@@ -57,14 +57,14 @@
     </path>
   </g>
 
-  <!-- VIPER text -->
+  <!-- ceviz text -->
   <text x="320" y="130"
         font-family="system-ui, -apple-system, 'Segoe UI', sans-serif"
         font-size="72"
         font-weight="800"
         fill="url(#lightning-gradient)"
         opacity="0.95">
-    VIPER
+    ceviz
   </text>
 
   <!-- Subtitle -->
@@ -73,7 +73,7 @@
         font-size="20"
         font-weight="400"
         fill="#6c7a89">
-    Vi-Performance - Lightning-fast performance analyzer
+    Lightning-fast performance analyzer
   </text>
 
   <!-- Feature badges -->

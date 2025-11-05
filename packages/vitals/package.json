@@ -1,10 +1,10 @@
 {
-  "name": "viper",
+  "name": "ceviz",
   "version": "0.0.1",
   "type": "module",
-  "description": "Performance analyzer for Node.js/Nuxt projects - Vi-Performance ⚡",
+  "description": "Performance analyzer for Node.js/Nuxt projects - Ceviz ⚡",
   "bin": {
-    "viper": "./dist/cli.mjs"
+    "ceviz": "./dist/cli.mjs"
   },
   "main": "./dist/index.mjs",
   "types": "./dist/index.d.mts",

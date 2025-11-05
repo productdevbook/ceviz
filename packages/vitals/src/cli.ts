@@ -13,15 +13,15 @@ import { resolve } from 'path'
 const program = new Command()
 
 program
-  .name('viper')
-  .description('⚡ Vi-Performance - Lightning-fast performance analyzer for Node.js/Nuxt projects')
+  .name('ceviz')
+  .description('⚡ Ceviz - Lightning-fast performance analyzer for Node.js/Nuxt projects')
   .version('0.1.0')
 
 program
   .command('analyze [path]')
   .alias('scan')
   .description('Analyze a project for performance issues')
-  .option('-c, --config <file>', 'Path to config file (default: viper.config.ts)')
+  .option('-c, --config <file>', 'Path to config file (default: ceviz.config.ts)')
   .option('-j, --json [file]', 'Output as JSON (optionally to a file)')
   .option('--html [file]', 'Generate interactive HTML report (auto-opens in browser)')
   .option('--scan-deps', 'Analyze framework code in node_modules (for framework contributors)')

@@ -12,7 +12,7 @@ export class ConsoleReporter {
   }
 
   private printHeader(): void {
-    console.log(chalk.bold.cyan('⚡ Viper Performance Analysis'))
+    console.log(chalk.bold.cyan('⚡ Ceviz Performance Analysis'))
     console.log(chalk.gray('─'.repeat(60)))
   }
 

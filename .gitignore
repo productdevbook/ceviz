@@ -8,13 +8,13 @@ dist
 build
 coverage
 
-# Viper reports (keep example report only)
+# Ceviz reports (keep example report only)
 *-report.html
 *-analysis.html
 !nuxt-framework-analysis.html
 
-# Viper config (keep example only)
-viper.config.ts
-viper.config.js
-viper.config.mjs
-!viper.config.example.ts
+# Ceviz config (keep example only)
+ceviz.config.ts
+ceviz.config.js
+ceviz.config.mjs
+!ceviz.config.example.ts

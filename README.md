@@ -1,14 +1,14 @@
 <div align="center">
 
-![Viper Banner](./assets/viper-banner.svg)
+![Ceviz Banner](./assets/ceviz-banner.svg)
 
-# ⚡ Viper
+# ⚡ Ceviz
 
-**Vi-Performance - Lightning-fast performance analyzer for Node.js/Nuxt projects**
+**Lightning-fast performance analyzer for Node.js/Nuxt projects**
 
 </div>
 
-Viper automatically scans your codebase and detects performance issues that slow down your application:
+Ceviz automatically scans your codebase and detects performance issues that slow down your application:
 
 - 🔍 **O(n²) and O(n³) complexity** - Nested loops and inefficient algorithms
 - 💾 **Memory leaks** - Unclosed intervals, event listeners, and memory bloat
@@ -31,13 +31,13 @@ Viper automatically scans your codebase and detects performance issues that slow
 
 ```bash
 # Run without installing
-npx viper analyze
+npx ceviz analyze
 
 # Or install globally
-pnpm add -g viper
+pnpm add -g ceviz
 
 # Or add to your project
-pnpm add -D viper
+pnpm add -D ceviz
 ```
 
 ## Usage
@@ -46,39 +46,39 @@ pnpm add -D viper
 
 ```bash
 # Using pnpm exec (in workspace)
-pnpm exec viper analyze
+pnpm exec ceviz analyze
 
 # Or using node directly
-node packages/viper/dist/cli.mjs analyze
+node packages/vitals/dist/cli.mjs analyze
 
 # Analyze specific path
-viper analyze ./my-project
+ceviz analyze ./my-project
 
 # Output as JSON
-viper analyze --json
+ceviz analyze --json
 
 # Save JSON to file
-viper analyze --json report.json
+ceviz analyze --json report.json
 
 # Generate interactive HTML report (auto-opens in browser)
-viper analyze --html
-viper analyze --html report.html
+ceviz analyze --html
+ceviz analyze --html report.html
 
 # Use custom config file
-viper analyze --config viper.config.ts
+ceviz analyze --config ceviz.config.ts
 ```
 
 ### Configuration File
 
-Create `viper.config.ts` in your project root for full **TypeScript autocomplete and type checking**:
+Create `ceviz.config.ts` in your project root for full **TypeScript autocomplete and type checking**:
 
 ```typescript
-import { defineConfig } from 'viper'
+import { defineConfig } from 'ceviz'
 
 export default defineConfig({
   // Load custom plugins
   plugins: [
-    'viper-plugin-vue',
+    'ceviz-plugin-vue',
     './my-custom-plugin.js'
   ],
 
@@ -110,22 +110,22 @@ Analyze framework code in node_modules to find performance issues and report the
 ```bash
 # Analyze Nuxt core (run from project directory with node_modules)
 cd packages/nuxt-test
-node ../viper/dist/cli.mjs analyze . --scan-deps --target-deps nuxt
+node ../vitals/dist/cli.mjs analyze . --scan-deps --target-deps nuxt
 
 # Generate interactive HTML report
-node ../viper/dist/cli.mjs analyze . --scan-deps --target-deps nuxt --html
+node ../vitals/dist/cli.mjs analyze . --scan-deps --target-deps nuxt --html
 
 # Analyze multiple frameworks
-node ../viper/dist/cli.mjs analyze . --scan-deps --target-deps nuxt,vite,vue
+node ../vitals/dist/cli.mjs analyze . --scan-deps --target-deps nuxt,vite,vue
 
 # Generate JSON report for GitHub issues
-node ../viper/dist/cli.mjs analyze . --scan-deps --target-deps nuxt --json nuxt-issues.json
+node ../vitals/dist/cli.mjs analyze . --scan-deps --target-deps nuxt --json nuxt-issues.json
 ```
 
 ### Example Output
 
 ```
-⚡ Viper Performance Analysis
+⚡ Ceviz Performance Analysis
 ────────────────────────────────────────────────────────────
 
 📊 Summary
@@ -188,7 +188,7 @@ node ../viper/dist/cli.mjs analyze . --scan-deps --target-deps nuxt --json nuxt-
   3. Clean up memory leaks → add proper cleanup
 ```
 
-## What Viper Detects
+## What Ceviz Detects
 
 ### CPU Issues
 
@@ -273,7 +273,7 @@ const [user, posts, comments] = await Promise.all([
 
 ## Rules
 
-Viper currently has **5 core rules**:
+Ceviz currently has **5 core rules**:
 
 | Rule | Category | Severity | Description |
 |------|----------|----------|-------------|
@@ -287,13 +287,13 @@ More rules coming soon!
 
 ## Plugin System
 
-Viper supports a powerful plugin system for creating custom rules and reporters.
+Ceviz supports a powerful plugin system for creating custom rules and reporters.
 
 ### Creating a Custom Plugin
 
 ```typescript
-// viper-plugins/my-plugin.ts
-import type { ViperPlugin, Rule } from '@viper/analyzer'
+// ceviz-plugins/my-plugin.ts
+import type { CevizPlugin, Rule } from 'ceviz'
 
 const myRule: Rule = {
   id: 'no-console-log',
@@ -308,7 +308,7 @@ const myRule: Rule = {
   },
 }
 
-const myPlugin: ViperPlugin = {
+const myPlugin: CevizPlugin = {
   name: 'my-custom-plugin',
   version: '1.0.0',
   rules: [myRule],
@@ -326,14 +326,14 @@ export default myPlugin
 ### Using Plugins
 
 ```typescript
-// viper.config.ts
-import { defineConfig } from '@viper/analyzer'
-import myPlugin from './viper-plugins/my-plugin.js'
+// ceviz.config.ts
+import { defineConfig } from 'ceviz'
+import myPlugin from './ceviz-plugins/my-plugin.js'
 
 export default defineConfig({
   plugins: [
     myPlugin,
-    'viper-plugin-vue', // Or from npm
+    'ceviz-plugin-vue', // Or from npm
   ],
 })
 ```
@@ -342,7 +342,7 @@ See [PLUGIN_API.md](PLUGIN_API.md) for complete plugin documentation.
 
 ## CI/CD Integration
 
-Viper exits with code 1 if critical issues are found, making it perfect for CI/CD:
+Ceviz exits with code 1 if critical issues are found, making it perfect for CI/CD:
 
 ```yaml
 # GitHub Actions
@@ -350,17 +350,17 @@ name: Performance Check
 on: [pull_request]
 
 jobs:
-  viper:
+  ceviz:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: pnpm/action-setup@v2
-      - run: pnpm dlx @viper/analyzer analyze
+      - run: pnpm dlx ceviz analyze
 ```
 
 ## Real-World Results
 
-Viper analyzed **Nuxt 4.2.0** and found **243 performance issues**:
+Ceviz analyzed **Nuxt 4.2.0** and found **243 performance issues**:
 - 85x Array operations in loop (O(n*m))
 - 73x Nested loops (O(n²))
 - 69x Sequential async operations (waterfalls)
@@ -391,11 +391,11 @@ See the [interactive HTML report](nuxt-framework-analysis.html) for details.
 
 **We're building something special here, and we want YOU to be part of it!**
 
-Viper is more than just a tool - it's a movement to make performance analysis accessible, accurate, and actionable for everyone. We're **100% open to contributions** and **wildly open to new ideas**.
+Ceviz is more than just a tool - it's a movement to make performance analysis accessible, accurate, and actionable for everyone. We're **100% open to contributions** and **wildly open to new ideas**.
 
 ### Our Vision
 
-We want to take Viper **far beyond** what it is today. Our goal is to build the **most comprehensive, accurate, and delightful** performance analysis tool in the JavaScript ecosystem - analyzing everything from the smallest edge case to framework-level performance issues.
+We want to take Ceviz **far beyond** what it is today. Our goal is to build the **most comprehensive, accurate, and delightful** performance analysis tool in the JavaScript ecosystem - analyzing everything from the smallest edge case to framework-level performance issues.
 
 ### We Need Your Help
 
@@ -403,10 +403,10 @@ Whether you're:
 - 🐛 **Finding bugs** - Help us catch edge cases
 - 💡 **Suggesting features** - Share your wildest ideas
 - 🔧 **Writing code** - Contribute rules, reporters, or core features
-- 📝 **Improving docs** - Make Viper easier to understand
+- 📝 **Improving docs** - Make Ceviz easier to understand
 - 🎨 **Designing UX** - Help us build better reports and visualizations
-- 🧪 **Testing** - Run Viper on your projects and share results
-- 🌍 **Spreading the word** - Tell others about Viper
+- 🧪 **Testing** - Run Ceviz on your projects and share results
+- 🌍 **Spreading the word** - Tell others about Ceviz
 
 **Every contribution matters!** We're completely open to:
 - New detection rules (regex catastrophic backtracking, excessive re-renders, etc.)
@@ -428,13 +428,13 @@ We review PRs quickly and are happy to mentor new contributors!
 
 ### Let's Build the Ecosystem Together
 
-Viper is just getting started. With your help, we can make it the go-to tool for performance analysis across the entire JavaScript ecosystem. Let's build something amazing together!
+Ceviz is just getting started. With your help, we can make it the go-to tool for performance analysis across the entire JavaScript ecosystem. Let's build something amazing together!
 
-**Join us:** [GitHub Issues](https://github.com/productdevbook/viper/issues)
+**Join us:** [GitHub Issues](https://github.com/productdevbook/ceviz/issues)
 
 ## License
 
-MIT © Viper Team
+MIT © Ceviz Team
 
 ---
 

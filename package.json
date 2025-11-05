@@ -1,13 +1,13 @@
 {
-  "name": "viper",
+  "name": "ceviz",
   "version": "0.0.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "pnpm --filter viper build",
-    "dev": "pnpm --filter viper dev",
-    "analyze": "pnpm --filter viper build && node packages/vitals/dist/cli.mjs analyze",
-    "test": "pnpm --filter viper test",
+    "build": "pnpm --filter ceviz build",
+    "dev": "pnpm --filter ceviz dev",
+    "analyze": "pnpm --filter ceviz build && node packages/vitals/dist/cli.mjs analyze",
+    "test": "pnpm --filter ceviz test",
     "bumpp": "bumpp package.json packages/*/package.json",
     "release": "cd packages/vitals && pnpm pu:release"
   },
