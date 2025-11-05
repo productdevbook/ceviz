@@ -6,6 +6,8 @@
 
 **Lightning-fast performance analyzer for all npm packages**
 
+![Ceviz Screenshot](./assets/screen.png)
+
 </div>
 
 Ceviz automatically scans your codebase and detects performance issues that slow down your application:
