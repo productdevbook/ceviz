@@ -1,13 +1,14 @@
-import { ProjectScanner, type ScanOptions } from './scanner.js'
+import type { ScanOptions } from './scanner.js'
+import type { AnalysisResult } from './types.js'
 import { CodeAnalyzer } from './analyzer.js'
 import { allRules } from './rules/index.js'
-import type { AnalysisResult, ProjectContext } from './types.js'
+import { ProjectScanner } from './scanner.js'
 
-export * from './types.js'
+export { CodeAnalyzer } from './analyzer.js'
+export { defineConfig, mergeConfig, resolveConfig } from './config.js'
 export { allRules } from './rules/index.js'
 export { ProjectScanner, type ScanOptions } from './scanner.js'
-export { CodeAnalyzer } from './analyzer.js'
-export { defineConfig, resolveConfig, mergeConfig } from './config.js'
+export * from './types.js'
 
 export interface AnalyzeOptions extends ScanOptions {
   // Future options can be added here
@@ -23,7 +24,7 @@ export interface AnalyzeOptions extends ScanOptions {
  */
 export async function analyzeProject(
   projectRoot: string,
-  options: AnalyzeOptions = {}
+  options: AnalyzeOptions = {},
 ): Promise<AnalysisResult> {
   // 1. Scan project
   const scanner = new ProjectScanner(projectRoot, options)

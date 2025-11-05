@@ -1,4 +1,4 @@
-import type { Rule, Issue, RuleContext } from '../../types.js'
+import type { Issue, Rule, RuleContext } from '../../types.js'
 import { getNodeLocation } from '../../utils/ast-helpers.js'
 
 /**
@@ -17,16 +17,17 @@ export const nestedLoopsRule: Rule = {
     const { ast, filePath, code } = context
 
     const checkNode = (node: any, loopDepth = 0): void => {
-      if (!node || typeof node !== 'object') return
+      if (!node || typeof node !== 'object')
+        return
 
       // Check if this is a loop
-      const isLoop =
-        node.type === 'ForStatement' ||
-        node.type === 'ForInStatement' ||
-        node.type === 'ForOfStatement' ||
-        node.type === 'WhileStatement' ||
-        node.type === 'DoWhileStatement' ||
-        (node.type === 'CallExpression' && isArrayIterator(node))
+      const isLoop
+        = node.type === 'ForStatement'
+          || node.type === 'ForInStatement'
+          || node.type === 'ForOfStatement'
+          || node.type === 'WhileStatement'
+          || node.type === 'DoWhileStatement'
+          || (node.type === 'CallExpression' && isArrayIterator(node))
 
       const newDepth = isLoop ? loopDepth + 1 : loopDepth
 
@@ -39,8 +40,10 @@ export const nestedLoopsRule: Rule = {
         const codeSnippet = lines[line - 1] || ''
 
         let complexity = `O(n²)`
-        if (newDepth === 3) complexity = 'O(n³)'
-        if (newDepth > 3) complexity = `O(n^${newDepth})`
+        if (newDepth === 3)
+          complexity = 'O(n³)'
+        if (newDepth > 3)
+          complexity = `O(n^${newDepth})`
 
         issues.push({
           id: `nested-loops-${line}`,
@@ -77,11 +80,13 @@ export const nestedLoopsRule: Rule = {
 
       // Recursively check all child nodes
       for (const key in node) {
-        if (key === 'type' || key === 'loc' || key === 'range') continue
+        if (key === 'type' || key === 'loc' || key === 'range')
+          continue
         const value = node[key]
         if (Array.isArray(value)) {
           value.forEach(child => checkNode(child, newDepth))
-        } else if (typeof value === 'object') {
+        }
+        else if (typeof value === 'object') {
           checkNode(value, newDepth)
         }
       }
@@ -93,13 +98,16 @@ export const nestedLoopsRule: Rule = {
 }
 
 function isArrayIterator(node: any): boolean {
-  if (node.type !== 'CallExpression') return false
+  if (node.type !== 'CallExpression')
+    return false
 
   const callee = node.callee
-  if (!callee || callee.type !== 'MemberExpression') return false
+  if (!callee || callee.type !== 'MemberExpression')
+    return false
 
   const property = callee.property
-  if (!property) return false
+  if (!property)
+    return false
 
   const methodName = property.name || property.value
   return ['forEach', 'map', 'filter', 'reduce', 'find', 'some', 'every'].includes(methodName)

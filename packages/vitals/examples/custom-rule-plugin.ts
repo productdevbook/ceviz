@@ -20,7 +20,7 @@
  * })
  */
 
-import type { CevizPlugin, Rule, RuleContext, Issue } from '../src/types.js'
+import type { CevizPlugin, Issue, Rule, RuleContext } from '../src/types.js'
 
 // Example: Detect console.log() in production code
 const noConsoleLogRule: Rule = {
@@ -35,16 +35,17 @@ const noConsoleLogRule: Rule = {
     const { ast, filePath, code } = context
 
     const checkNode = (node: any): void => {
-      if (!node || typeof node !== 'object') return
+      if (!node || typeof node !== 'object')
+        return
 
       // Check if this is console.log()
       if (
-        node.type === 'CallExpression' &&
-        node.callee?.type === 'MemberExpression' &&
-        node.callee?.object?.name === 'console' &&
-        (node.callee?.property?.name === 'log' ||
-         node.callee?.property?.name === 'debug' ||
-         node.callee?.property?.name === 'info')
+        node.type === 'CallExpression'
+        && node.callee?.type === 'MemberExpression'
+        && node.callee?.object?.name === 'console'
+        && (node.callee?.property?.name === 'log'
+          || node.callee?.property?.name === 'debug'
+          || node.callee?.property?.name === 'info')
       ) {
         const line = node.loc?.start.line || 0
         const column = node.loc?.start.column || 0
@@ -87,11 +88,13 @@ const noConsoleLogRule: Rule = {
 
       // Recursively check all child nodes
       for (const key in node) {
-        if (key === 'type' || key === 'loc' || key === 'range') continue
+        if (key === 'type' || key === 'loc' || key === 'range')
+          continue
         const value = node[key]
         if (Array.isArray(value)) {
           value.forEach(child => checkNode(child))
-        } else if (typeof value === 'object') {
+        }
+        else if (typeof value === 'object') {
           checkNode(value)
         }
       }

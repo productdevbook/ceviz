@@ -50,7 +50,7 @@ export async function resolveConfig(cwd: string = process.cwd()): Promise<CevizC
  */
 export function mergeConfig(
   fileConfig: CevizConfig,
-  cliOptions: Partial<CevizConfig>
+  cliOptions: Partial<CevizConfig>,
 ): CevizConfig {
   return {
     ...fileConfig,

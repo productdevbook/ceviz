@@ -1,6 +1,6 @@
+import type { AnalysisResult, FileAnalysis, Issue, Metrics, ProjectContext, Rule, RuleContext, Summary } from './types.js'
+import { readFileSync } from 'node:fs'
 import { parseAsync } from 'oxc-parser'
-import type { Rule, RuleContext, Issue, AnalysisResult, FileAnalysis, ProjectContext, Summary, Metrics } from './types.js'
-import { readFileSync } from 'fs'
 
 export class CodeAnalyzer {
   private rules: Rule[] = []
@@ -24,7 +24,8 @@ export class CodeAnalyzer {
       parseResult = await parseAsync(filePath, content, {
         sourceType: 'module',
       })
-    } catch (error) {
+    }
+    catch (error) {
       // Parse error - skip file
       return {
         path: filePath,
@@ -54,7 +55,8 @@ export class CodeAnalyzer {
       try {
         const ruleIssues = rule.check(context)
         issues.push(...ruleIssues)
-      } catch (error) {
+      }
+      catch (error) {
         console.error(`Rule ${rule.id} failed on ${filePath}:`, error)
       }
     }
@@ -101,10 +103,14 @@ export class CodeAnalyzer {
     score = Math.max(0, score)
 
     let grade: 'A' | 'B' | 'C' | 'D' | 'F'
-    if (score >= 90) grade = 'A'
-    else if (score >= 80) grade = 'B'
-    else if (score >= 70) grade = 'C'
-    else if (score >= 60) grade = 'D'
+    if (score >= 90)
+      grade = 'A'
+    else if (score >= 80)
+      grade = 'B'
+    else if (score >= 70)
+      grade = 'C'
+    else if (score >= 60)
+      grade = 'D'
     else grade = 'F'
 
     const summary: Summary = {
@@ -154,7 +160,7 @@ export class CodeAnalyzer {
     const potentialSavings = bundleIssues.reduce((sum, i) => {
       // Extract size from estimate like "70KB" or "230KB"
       const match = i.impact.estimate?.match(/(\d+)KB/)
-      return sum + (match ? parseInt(match[1]) * 1024 : 0)
+      return sum + (match ? Number.parseInt(match[1]) * 1024 : 0)
     }, 0)
 
     const heavyDeps = bundleIssues
@@ -198,25 +204,28 @@ export class CodeAnalyzer {
     let complexity = 1
 
     const countNodes = (node: any) => {
-      if (!node || typeof node !== 'object') return
+      if (!node || typeof node !== 'object')
+        return
 
-      if (node.type === 'IfStatement' ||
-          node.type === 'ConditionalExpression' ||
-          node.type === 'SwitchCase' ||
-          node.type === 'ForStatement' ||
-          node.type === 'WhileStatement' ||
-          node.type === 'DoWhileStatement' ||
-          node.type === 'LogicalExpression') {
+      if (node.type === 'IfStatement'
+        || node.type === 'ConditionalExpression'
+        || node.type === 'SwitchCase'
+        || node.type === 'ForStatement'
+        || node.type === 'WhileStatement'
+        || node.type === 'DoWhileStatement'
+        || node.type === 'LogicalExpression') {
         complexity++
       }
 
       // Recursively check all properties
       for (const key in node) {
-        if (key === 'type' || key === 'loc' || key === 'range') continue
+        if (key === 'type' || key === 'loc' || key === 'range')
+          continue
         const value = node[key]
         if (Array.isArray(value)) {
           value.forEach(countNodes)
-        } else if (typeof value === 'object') {
+        }
+        else if (typeof value === 'object') {
           countNodes(value)
         }
       }
@@ -224,9 +233,12 @@ export class CodeAnalyzer {
 
     countNodes(ast)
 
-    if (complexity <= 5) return 'O(1)'
-    if (complexity <= 10) return 'O(n)'
-    if (complexity <= 20) return 'O(n log n)'
+    if (complexity <= 5)
+      return 'O(1)'
+    if (complexity <= 10)
+      return 'O(n)'
+    if (complexity <= 20)
+      return 'O(n log n)'
     return 'O(n²)'
   }
 

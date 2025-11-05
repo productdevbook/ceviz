@@ -1,8 +1,8 @@
-import type { CevizPlugin, PluginContext, Rule, Reporter, CevizConfig, ProjectContext } from './types.js'
-import { pathToFileURL } from 'node:url'
-import { resolve } from 'node:path'
-import { createHooks } from 'hookable'
 import type { Hookable } from 'hookable'
+import type { CevizConfig, CevizPlugin, PluginContext, ProjectContext, Reporter, Rule } from './types.js'
+import { resolve } from 'node:path'
+import { pathToFileURL } from 'node:url'
+import { createHooks } from 'hookable'
 
 export interface CevizHooks {
   'plugin:loading': (pluginName: string) => void
@@ -34,7 +34,8 @@ export class PluginLoader {
       if (typeof plugin === 'string') {
         // Load plugin from package name or file path
         await this.loadPluginByPath(plugin, config, projectContext)
-      } else {
+      }
+      else {
         // Plugin object provided directly
         await this.registerPlugin(plugin, config, projectContext)
       }
@@ -44,7 +45,7 @@ export class PluginLoader {
   private async loadPluginByPath(
     pluginPath: string,
     config: CevizConfig,
-    projectContext: ProjectContext
+    projectContext: ProjectContext,
   ): Promise<void> {
     try {
       await this.hooks.callHook('plugin:loading', pluginPath)
@@ -65,7 +66,8 @@ export class PluginLoader {
       }
 
       await this.registerPlugin(plugin, config, projectContext)
-    } catch (error) {
+    }
+    catch (error) {
       console.error(`❌ Failed to load plugin: ${pluginPath}`, error)
     }
   }
@@ -73,7 +75,7 @@ export class PluginLoader {
   private async registerPlugin(
     plugin: CevizPlugin,
     config: CevizConfig,
-    projectContext: ProjectContext
+    projectContext: ProjectContext,
   ): Promise<void> {
     const context: PluginContext = {
       addRule: (rule: Rule) => this.addRule(rule),

@@ -1,9 +1,9 @@
 import type { Rule } from '../types.js'
-import { nestedLoopsRule } from './cpu/nested-loops.js'
 import { arrayFindInLoopRule } from './cpu/array-find-in-loop.js'
-import { memoryLeakIntervalRule } from './memory/memory-leak-interval.js'
-import { syncFileOperationsRule } from './io/sync-file-operations.js'
+import { nestedLoopsRule } from './cpu/nested-loops.js'
 import { sequentialRequestsRule } from './io/sequential-requests.js'
+import { syncFileOperationsRule } from './io/sync-file-operations.js'
+import { memoryLeakIntervalRule } from './memory/memory-leak-interval.js'
 
 export const allRules: Rule[] = [
   // CPU rules

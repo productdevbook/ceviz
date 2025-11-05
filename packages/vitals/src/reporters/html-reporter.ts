@@ -1,6 +1,5 @@
 import type { AnalysisResult } from '../types.js'
-import { writeFileSync } from 'fs'
-import { basename } from 'path'
+import { writeFileSync } from 'node:fs'
 import open from 'open'
 
 export class HtmlReporter {
@@ -454,7 +453,8 @@ export class HtmlReporter {
           </tr>
         </thead>
         <tbody id="issuesBody">
-          ${issues.length === 0 ? `
+          ${issues.length === 0
+            ? `
             <tr>
               <td colspan="5">
                 <div class="empty-state">
@@ -464,7 +464,8 @@ export class HtmlReporter {
                 </div>
               </td>
             </tr>
-          ` : issues.map(issue => `
+          `
+            : issues.map(issue => `
             <tr data-severity="${issue.severity}" data-category="${issue.category}">
               <td>
                 <span class="severity-badge severity-${issue.severity}">${issue.severity}</span>
@@ -559,7 +560,7 @@ export class HtmlReporter {
   private shortenPath(path: string): string {
     const parts = path.split('/')
     if (parts.length > 5) {
-      return '.../' + parts.slice(-4).join('/')
+      return `.../${parts.slice(-4).join('/')}`
     }
     return path
   }

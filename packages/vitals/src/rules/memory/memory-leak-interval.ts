@@ -1,4 +1,4 @@
-import type { Rule, Issue, RuleContext } from '../../types.js'
+import type { Issue, Rule, RuleContext } from '../../types.js'
 import { getNodeLocation } from '../../utils/ast-helpers.js'
 
 /**
@@ -20,7 +20,8 @@ export const memoryLeakIntervalRule: Rule = {
     const cleared: Set<string> = new Set()
 
     const checkNode = (node: any, parent: any = null, scope: string = 'global'): void => {
-      if (!node || typeof node !== 'object') return
+      if (!node || typeof node !== 'object')
+        return
 
       // Track setInterval/setTimeout calls
       if (node.type === 'CallExpression') {
@@ -55,11 +56,13 @@ export const memoryLeakIntervalRule: Rule = {
 
       // Check all children
       for (const key in node) {
-        if (key === 'type' || key === 'loc' || key === 'range') continue
+        if (key === 'type' || key === 'loc' || key === 'range')
+          continue
         const value = node[key]
         if (Array.isArray(value)) {
           value.forEach(child => checkNode(child, node, scope))
-        } else if (typeof value === 'object') {
+        }
+        else if (typeof value === 'object') {
           checkNode(value, node, scope)
         }
       }
@@ -70,10 +73,10 @@ export const memoryLeakIntervalRule: Rule = {
     // Find intervals that are never cleared
     for (const interval of intervals) {
       const [scope, lineStr] = interval.split(':')
-      const line = parseInt(lineStr)
+      const line = Number.parseInt(lineStr)
 
       // Check if there's any clear in the same scope or cleanup scope
-      const hasCleanup = Array.from(cleared).some(c => {
+      const hasCleanup = Array.from(cleared).some((c) => {
         const [clearScope] = c.split(':')
         return clearScope === scope || clearScope === 'cleanup'
       })

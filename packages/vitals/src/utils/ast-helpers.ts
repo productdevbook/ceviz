@@ -2,7 +2,7 @@
  * Convert OXC byte offset to line and column numbers
  * OXC AST uses 'span' with byte offsets, not line/column
  */
-export function getLineAndColumn(code: string, byteOffset: number): { line: number; column: number } {
+export function getLineAndColumn(code: string, byteOffset: number): { line: number, column: number } {
   if (byteOffset === 0 || !code) {
     return { line: 1, column: 0 }
   }
@@ -18,7 +18,7 @@ export function getLineAndColumn(code: string, byteOffset: number): { line: numb
 /**
  * Get location from OXC AST node
  */
-export function getNodeLocation(node: any, code: string): { line: number; column: number } {
+export function getNodeLocation(node: any, code: string): { line: number, column: number } {
   if (!node?.span) {
     // Try alternative location properties
     if (node?.start !== undefined) {

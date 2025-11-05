@@ -1,4 +1,4 @@
-import type { Rule, Issue, RuleContext } from '../../types.js'
+import type { Issue, Rule, RuleContext } from '../../types.js'
 import { getNodeLocation } from '../../utils/ast-helpers.js'
 
 /**
@@ -17,16 +17,17 @@ export const arrayFindInLoopRule: Rule = {
     const { ast, filePath, code } = context
 
     const checkNode = (node: any, inLoop = false): void => {
-      if (!node || typeof node !== 'object') return
+      if (!node || typeof node !== 'object')
+        return
 
       // Check if we're entering a loop
-      const isLoop =
-        node.type === 'ForStatement' ||
-        node.type === 'ForInStatement' ||
-        node.type === 'ForOfStatement' ||
-        node.type === 'WhileStatement' ||
-        node.type === 'DoWhileStatement' ||
-        (node.type === 'CallExpression' && isArrayIterator(node))
+      const isLoop
+        = node.type === 'ForStatement'
+          || node.type === 'ForInStatement'
+          || node.type === 'ForOfStatement'
+          || node.type === 'WhileStatement'
+          || node.type === 'DoWhileStatement'
+          || (node.type === 'CallExpression' && isArrayIterator(node))
 
       const newInLoop = isLoop || inLoop
 
@@ -76,11 +77,13 @@ export const arrayFindInLoopRule: Rule = {
 
       // Recursively check children
       for (const key in node) {
-        if (key === 'type' || key === 'loc' || key === 'range') continue
+        if (key === 'type' || key === 'loc' || key === 'range')
+          continue
         const value = node[key]
         if (Array.isArray(value)) {
           value.forEach(child => checkNode(child, newInLoop))
-        } else if (typeof value === 'object') {
+        }
+        else if (typeof value === 'object') {
           checkNode(value, newInLoop)
         }
       }
@@ -92,9 +95,11 @@ export const arrayFindInLoopRule: Rule = {
 }
 
 function isArrayIterator(node: any): boolean {
-  if (node.type !== 'CallExpression') return false
+  if (node.type !== 'CallExpression')
+    return false
   const callee = node.callee
-  if (!callee || callee.type !== 'MemberExpression') return false
+  if (!callee || callee.type !== 'MemberExpression')
+    return false
   const methodName = callee.property?.name || callee.property?.value
   return ['forEach', 'map', 'filter', 'reduce'].includes(methodName)
 }

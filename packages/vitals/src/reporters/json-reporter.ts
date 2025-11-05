@@ -1,5 +1,5 @@
 import type { AnalysisResult } from '../types.js'
-import { writeFileSync } from 'fs'
+import { writeFileSync } from 'node:fs'
 
 export class JsonReporter {
   report(result: AnalysisResult, outputPath?: string): void {
@@ -8,7 +8,8 @@ export class JsonReporter {
     if (outputPath) {
       writeFileSync(outputPath, json, 'utf-8')
       console.log(`\n✅ JSON report saved to: ${outputPath}\n`)
-    } else {
+    }
+    else {
       console.log(json)
     }
   }

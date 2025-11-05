@@ -1,4 +1,4 @@
-import type { Rule, Issue, RuleContext } from '../../types.js'
+import type { Issue, Rule, RuleContext } from '../../types.js'
 import { getNodeLocation } from '../../utils/ast-helpers.js'
 
 /**
@@ -43,7 +43,8 @@ export const syncFileOperationsRule: Rule = {
     ]
 
     const checkNode = (node: any): void => {
-      if (!node || typeof node !== 'object') return
+      if (!node || typeof node !== 'object')
+        return
 
       if (node.type === 'CallExpression') {
         const callee = node.callee
@@ -56,7 +57,7 @@ export const syncFileOperationsRule: Rule = {
 
           let category: 'io' | 'cpu' = 'io'
           let estimate = '50-200ms block'
-          let asyncAlternative = calleeName.replace('Sync', '')
+          const asyncAlternative = calleeName.replace('Sync', '')
 
           // Crypto operations are more CPU-intensive
           if (calleeName.includes('pbkdf2') || calleeName.includes('scrypt')) {
@@ -98,11 +99,13 @@ export const syncFileOperationsRule: Rule = {
 
       // Check all children
       for (const key in node) {
-        if (key === 'type' || key === 'loc' || key === 'range') continue
+        if (key === 'type' || key === 'loc' || key === 'range')
+          continue
         const value = node[key]
         if (Array.isArray(value)) {
           value.forEach(checkNode)
-        } else if (typeof value === 'object') {
+        }
+        else if (typeof value === 'object') {
           checkNode(value)
         }
       }

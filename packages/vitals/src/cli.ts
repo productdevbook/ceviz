@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 
+import { resolve } from 'node:path'
+import chalk from 'chalk'
 import { Command } from 'commander'
 import ora from 'ora'
-import chalk from 'chalk'
+import { mergeConfig, resolveConfig } from './config.js'
 import { analyzeProject } from './index.js'
-import { resolveConfig, mergeConfig } from './config.js'
 import { ConsoleReporter } from './reporters/console-reporter.js'
-import { JsonReporter } from './reporters/json-reporter.js'
 import { HtmlReporter } from './reporters/html-reporter.js'
-import { resolve } from 'path'
+import { JsonReporter } from './reporters/json-reporter.js'
 
 const program = new Command()
 
@@ -25,7 +25,7 @@ program
   .option('-j, --json [file]', 'Output as JSON (optionally to a file)')
   .option('--html [file]', 'Generate interactive HTML report (auto-opens in browser)')
   .option('--scan-deps', 'Analyze framework code in node_modules (for framework contributors)')
-  .option('--target-deps <packages>', 'Comma-separated list of packages to scan (e.g., nuxt,vite)', (val) => val.split(','))
+  .option('--target-deps <packages>', 'Comma-separated list of packages to scan (e.g., nuxt,vite)', val => val.split(','))
   .action(async (projectPath: string = '.', options: any) => {
     const targetPath = resolve(process.cwd(), projectPath)
 
@@ -59,11 +59,13 @@ program
         const htmlReporter = new HtmlReporter()
         const outputPath = typeof options.html === 'string' ? options.html : 'ceviz-report.html'
         await htmlReporter.report(result, outputPath, true)
-      } else if (options.json) {
+      }
+      else if (options.json) {
         const jsonReporter = new JsonReporter()
         const outputPath = typeof options.json === 'string' ? options.json : undefined
         jsonReporter.report(result, outputPath)
-      } else {
+      }
+      else {
         const consoleReporter = new ConsoleReporter()
         consoleReporter.report(result)
       }
@@ -71,12 +73,15 @@ program
       // Exit code based on severity
       if (result.summary.critical > 0) {
         process.exit(1)
-      } else if (result.summary.warnings > 5) {
+      }
+      else if (result.summary.warnings > 5) {
         process.exit(1)
-      } else {
+      }
+      else {
         process.exit(0)
       }
-    } catch (error) {
+    }
+    catch (error) {
       spinner.fail(chalk.red('Analysis failed'))
       console.error(chalk.red('\n❌ Error:'), error)
       process.exit(1)

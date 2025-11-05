@@ -1,7 +1,7 @@
-import { glob } from 'glob'
-import { readFileSync, statSync } from 'fs'
-import { join, relative } from 'path'
 import type { ProjectContext } from './types.js'
+import { readFileSync, statSync } from 'node:fs'
+import { join, relative } from 'node:path'
+import { glob } from 'glob'
 
 export interface ScanOptions {
   scanDeps?: boolean // Scan node_modules for framework analysis
@@ -26,7 +26,8 @@ export class ProjectScanner {
 
     try {
       packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'))
-    } catch {
+    }
+    catch {
       // No package.json found
     }
 
@@ -41,11 +42,16 @@ export class ProjectScanner {
     const isReact = !!allDeps.react || isNext
 
     let framework = 'unknown'
-    if (isNuxt) framework = 'nuxt'
-    else if (isNext) framework = 'next'
-    else if (isVue) framework = 'vue'
-    else if (isReact) framework = 'react'
-    else if (isVite) framework = 'vite'
+    if (isNuxt)
+      framework = 'nuxt'
+    else if (isNext)
+      framework = 'next'
+    else if (isVue)
+      framework = 'vue'
+    else if (isReact)
+      framework = 'react'
+    else if (isVite)
+      framework = 'vite'
 
     return {
       root: this.projectRoot,
@@ -93,7 +99,7 @@ export class ProjectScanner {
         '**/.next/**',
         '**/build/**',
         '**/coverage/**',
-      ]
+      ],
     })
 
     return files
@@ -123,13 +129,14 @@ export class ProjectScanner {
         const [scope, pkg] = dep.split('/')
         patterns.push(
           `node_modules/${scope}/${pkg}/**/*.{ts,tsx,js,jsx,mjs,cjs,vue}`,
-          `node_modules/.pnpm/${scope}+${pkg}@*/**/*.{ts,tsx,js,jsx,mjs,cjs,vue}`
+          `node_modules/.pnpm/${scope}+${pkg}@*/**/*.{ts,tsx,js,jsx,mjs,cjs,vue}`,
         )
-      } else {
+      }
+      else {
         // Regular package: nuxt, vite, etc.
         patterns.push(
           `node_modules/${dep}/**/*.{ts,tsx,js,jsx,mjs,cjs,vue}`,
-          `node_modules/.pnpm/${dep}@*/**/*.{ts,tsx,js,jsx,mjs,cjs,vue}`
+          `node_modules/.pnpm/${dep}@*/**/*.{ts,tsx,js,jsx,mjs,cjs,vue}`,
         )
       }
 
@@ -150,7 +157,7 @@ export class ProjectScanner {
             '**/.nuxt/**',
             // Note: We DON'T ignore dist/ for framework analysis
             // Frameworks ship compiled code in dist/
-          ]
+          ],
         })
 
         allFiles.push(...files)
@@ -197,20 +204,27 @@ export class ProjectScanner {
 
       if (file.endsWith('.vue')) {
         categories.vue.push(file)
-        if (rel.includes('components/')) categories.components.push(file)
-        if (rel.includes('pages/')) categories.pages.push(file)
-      } else if (file.endsWith('.ts') || file.endsWith('.tsx')) {
+        if (rel.includes('components/'))
+          categories.components.push(file)
+        if (rel.includes('pages/'))
+          categories.pages.push(file)
+      }
+      else if (file.endsWith('.ts') || file.endsWith('.tsx')) {
         categories.typescript.push(file)
-      } else if (file.endsWith('.js') || file.endsWith('.jsx')) {
+      }
+      else if (file.endsWith('.js') || file.endsWith('.jsx')) {
         categories.javascript.push(file)
       }
 
       if (rel.includes('server/') || rel.includes('/api/')) {
         categories.server.push(file)
-        if (rel.includes('/api/')) categories.api.push(file)
+        if (rel.includes('/api/'))
+          categories.api.push(file)
       }
-      if (rel.includes('composables/')) categories.composables.push(file)
-      if (rel.includes('middleware/')) categories.middleware.push(file)
+      if (rel.includes('composables/'))
+        categories.composables.push(file)
+      if (rel.includes('middleware/'))
+        categories.middleware.push(file)
     }
 
     return categories

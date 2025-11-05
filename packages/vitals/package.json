@@ -1,18 +1,18 @@
 {
   "name": "ceviz",
-  "version": "0.0.1",
   "type": "module",
+  "version": "0.0.1",
   "description": "Lightning-fast performance analyzer for all npm packages - Ceviz ⚡",
-  "bin": {
-    "ceviz": "./dist/cli.mjs"
-  },
-  "main": "./dist/index.mjs",
-  "types": "./dist/index.d.mts",
   "exports": {
     ".": {
       "types": "./dist/index.d.mts",
       "import": "./dist/index.mjs"
     }
+  },
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "bin": {
+    "ceviz": "./dist/cli.mjs"
   },
   "scripts": {
     "build": "tsdown",

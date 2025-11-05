@@ -1,4 +1,4 @@
-import type { Rule, Issue, RuleContext } from '../../types.js'
+import type { Issue, Rule, RuleContext } from '../../types.js'
 
 /**
  * Detect sequential async operations that could be parallelized
@@ -16,7 +16,8 @@ export const sequentialRequestsRule: Rule = {
     const { ast, filePath, code } = context
 
     const checkNode = (node: any, parent: any = null): void => {
-      if (!node || typeof node !== 'object') return
+      if (!node || typeof node !== 'object')
+        return
 
       // Look for consecutive await statements
       if (node.type === 'BlockStatement' || node.type === 'Program') {
@@ -29,7 +30,8 @@ export const sequentialRequestsRule: Rule = {
           // Check if this statement contains an await
           if (containsAwait(stmt)) {
             awaitStatements.push({ stmt, index: i })
-          } else if (awaitStatements.length > 0) {
+          }
+          else if (awaitStatements.length > 0) {
             // Non-await statement breaks the sequence
             if (awaitStatements.length >= 2) {
               // Found a sequence of 2+ awaits
@@ -47,27 +49,35 @@ export const sequentialRequestsRule: Rule = {
 
       // Recurse
       for (const key in node) {
-        if (key === 'type' || key === 'loc' || key === 'range') continue
+        if (key === 'type' || key === 'loc' || key === 'range')
+          continue
         const value = node[key]
         if (Array.isArray(value)) {
           value.forEach(child => checkNode(child, node))
-        } else if (typeof value === 'object') {
+        }
+        else if (typeof value === 'object') {
           checkNode(value, node)
         }
       }
     }
 
     function containsAwait(node: any): boolean {
-      if (!node) return false
-      if (node.type === 'AwaitExpression') return true
+      if (!node)
+        return false
+      if (node.type === 'AwaitExpression')
+        return true
 
       for (const key in node) {
-        if (key === 'type' || key === 'loc' || key === 'range') continue
+        if (key === 'type' || key === 'loc' || key === 'range')
+          continue
         const value = node[key]
         if (Array.isArray(value)) {
-          if (value.some(containsAwait)) return true
-        } else if (typeof value === 'object') {
-          if (containsAwait(value)) return true
+          if (value.some(containsAwait))
+            return true
+        }
+        else if (typeof value === 'object') {
+          if (containsAwait(value))
+            return true
         }
       }
       return false
@@ -118,16 +128,19 @@ export const sequentialRequestsRule: Rule = {
       const vars = new Set<string>()
 
       const extract = (n: any): void => {
-        if (!n) return
+        if (!n)
+          return
         if (n.type === 'Identifier') {
           vars.add(n.name)
         }
         for (const key in n) {
-          if (key === 'type' || key === 'loc' || key === 'range' || key === 'id') continue
+          if (key === 'type' || key === 'loc' || key === 'range' || key === 'id')
+            continue
           const value = n[key]
           if (Array.isArray(value)) {
             value.forEach(extract)
-          } else if (typeof value === 'object') {
+          }
+          else if (typeof value === 'object') {
             extract(value)
           }
         }
@@ -138,7 +151,8 @@ export const sequentialRequestsRule: Rule = {
     }
 
     function reportSequence(awaitStatements: any[]): void {
-      if (!checkIfIndependent(awaitStatements)) return
+      if (!checkIfIndependent(awaitStatements))
+        return
 
       const first = awaitStatements[0].stmt
       const line = first.loc?.start.line || 0

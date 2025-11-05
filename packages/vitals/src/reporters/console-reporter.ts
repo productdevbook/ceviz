@@ -1,5 +1,5 @@
-import chalk from 'chalk'
 import type { AnalysisResult, Issue } from '../types.js'
+import chalk from 'chalk'
 
 export class ConsoleReporter {
   report(result: AnalysisResult): void {
@@ -19,7 +19,7 @@ export class ConsoleReporter {
   private printSummary(result: AnalysisResult): void {
     const { summary } = result
 
-    console.log('\n' + chalk.bold('📊 Summary'))
+    console.log(`\n${chalk.bold('📊 Summary')}`)
     console.log(chalk.gray('─'.repeat(60)))
 
     const scoreColor = this.getScoreColor(summary.score)
@@ -38,7 +38,7 @@ export class ConsoleReporter {
     const { issues } = result
 
     if (issues.length === 0) {
-      console.log('\n' + chalk.green.bold('✨ No performance issues found!'))
+      console.log(`\n${chalk.green.bold('✨ No performance issues found!')}`)
       return
     }
 
@@ -47,7 +47,7 @@ export class ConsoleReporter {
     const warnings = issues.filter(i => i.severity === 'warning')
 
     if (critical.length > 0) {
-      console.log('\n' + chalk.bold.red('🔴 Critical Issues'))
+      console.log(`\n${chalk.bold.red('🔴 Critical Issues')}`)
       console.log(chalk.gray('─'.repeat(60)))
       this.printIssueList(critical.slice(0, 5)) // Show top 5
       if (critical.length > 5) {
@@ -56,7 +56,7 @@ export class ConsoleReporter {
     }
 
     if (warnings.length > 0 && critical.length < 5) {
-      console.log('\n' + chalk.bold.yellow('⚠️  Warnings'))
+      console.log(`\n${chalk.bold.yellow('⚠️  Warnings')}`)
       console.log(chalk.gray('─'.repeat(60)))
       const remaining = 5 - critical.length
       this.printIssueList(warnings.slice(0, remaining))
@@ -92,7 +92,7 @@ export class ConsoleReporter {
   private printMetrics(result: AnalysisResult): void {
     const { metrics } = result
 
-    console.log('\n' + chalk.bold('📈 Performance Metrics'))
+    console.log(`\n${chalk.bold('📈 Performance Metrics')}`)
     console.log(chalk.gray('─'.repeat(60)))
 
     // CPU
@@ -137,7 +137,7 @@ export class ConsoleReporter {
   }
 
   private printFooter(result: AnalysisResult): void {
-    console.log('\n' + chalk.gray('─'.repeat(60)))
+    console.log(`\n${chalk.gray('─'.repeat(60))}`)
 
     const { summary } = result
 
@@ -146,9 +146,11 @@ export class ConsoleReporter {
       console.log(chalk.gray('  1. Fix critical O(n²) loops → use Map/Set for lookups'))
       console.log(chalk.gray('  2. Replace sync file operations → use async versions'))
       console.log(chalk.gray('  3. Clean up memory leaks → add proper cleanup'))
-    } else if (summary.warnings > 0) {
+    }
+    else if (summary.warnings > 0) {
       console.log(chalk.green('\n✨ Good job! Only minor optimizations remain'))
-    } else {
+    }
+    else {
       console.log(chalk.green.bold('\n🎉 Perfect! No performance issues detected'))
     }
 
@@ -158,10 +160,14 @@ export class ConsoleReporter {
   }
 
   private getScoreColor(score: number) {
-    if (score >= 90) return chalk.green.bold
-    if (score >= 80) return chalk.cyan.bold
-    if (score >= 70) return chalk.yellow.bold
-    if (score >= 60) return chalk.orange.bold
+    if (score >= 90)
+      return chalk.green.bold
+    if (score >= 80)
+      return chalk.cyan.bold
+    if (score >= 70)
+      return chalk.yellow.bold
+    if (score >= 60)
+      return chalk.orange.bold
     return chalk.red.bold
   }
 
@@ -171,8 +177,10 @@ export class ConsoleReporter {
   }
 
   private getIssueColor(count: number, value: number) {
-    if (count === 0) return chalk.green(value)
-    if (count < 5) return chalk.yellow(value)
+    if (count === 0)
+      return chalk.green(value)
+    if (count < 5)
+      return chalk.yellow(value)
     return chalk.red(value)
   }
 
@@ -188,14 +196,18 @@ export class ConsoleReporter {
   }
 
   private getBloatColor(level: string): string {
-    if (level === 'low') return chalk.green(level)
-    if (level === 'medium') return chalk.yellow(level)
+    if (level === 'low')
+      return chalk.green(level)
+    if (level === 'medium')
+      return chalk.yellow(level)
     return chalk.red(level)
   }
 
   private formatBytes(bytes: number): string {
-    if (bytes < 1024) return `${bytes}B`
-    if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)}KB`
+    if (bytes < 1024)
+      return `${bytes}B`
+    if (bytes < 1024 * 1024)
+      return `${Math.round(bytes / 1024)}KB`
     return `${Math.round(bytes / 1024 / 1024)}MB`
   }
 }
