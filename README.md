@@ -438,4 +438,4 @@ MIT © Ceviz Team
 
 ---
 
-**Built with ❤️ for the Node.js/Nuxt community**
+**Built with ❤️ for all npm packages**

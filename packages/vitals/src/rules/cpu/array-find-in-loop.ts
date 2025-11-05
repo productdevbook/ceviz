@@ -62,7 +62,7 @@ export const arrayFindInLoopRule: Rule = {
               suggestion: {
                 fix: 'Convert array to Map/Set before the loop for O(1) lookups',
                 example: `// Instead of:\nfor (const item of items) {\n  const match = array.${methodName}(x => x.id === item.id)\n}\n\n// Use:\nconst lookup = new Map(array.map(x => [x.id, x]))\nfor (const item of items) {\n  const match = lookup.get(item.id)\n}`,
-                docs: 'https://vitals.dev/rules/array-find-in-loop',
+                docs: 'https://github.com/productdevbook/ceviz#array-find-in-loop',
               },
               autoFixable: false,
               codeSnippet: {

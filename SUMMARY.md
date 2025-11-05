@@ -1,4 +1,4 @@
-# 🩺 Vitals - Performance Analyzer
+# ⚡ Ceviz - Performance Analyzer
 
 ## ✅ Completed Features
 
@@ -34,7 +34,7 @@
 - ✅ **Metrics calculation** - CPU, Memory, Bundle, I/O metrics
 
 ### 5. CLI
-- ✅ **Commands** - `vitals analyze [path]`
+- ✅ **Commands** - `ceviz analyze [path]`
 - ✅ **Options** - `--json [file]` for JSON output
 - ✅ **Exit codes** - Returns 1 for critical issues (CI/CD ready)
 - ✅ **Spinner & colors** - Beautiful UX with ora + chalk
@@ -97,10 +97,10 @@
 pnpm build
 
 # Analyze a project
-vitals analyze ./my-project
+ceviz analyze ./my-project
 
 # With JSON output
-vitals analyze ./my-project --json report.json
+ceviz analyze ./my-project --json report.json
 
 # From workspace
 pnpm analyze packages/nuxt-test
@@ -109,7 +109,7 @@ pnpm analyze packages/nuxt-test
 ## 📦 Package Structure
 
 ```
-vitals/
+ceviz/
 ├── packages/
 │   ├── vitals/              # Main analyzer package
 │   │   ├── src/
@@ -135,7 +135,7 @@ vitals/
 
 ## 🎉 Status
 
-**Vitals is production-ready!**
+**Ceviz is production-ready!**
 
 - ✅ Core functionality complete
 - ✅ 5 performance rules working
@@ -150,7 +150,7 @@ vitals/
 - [ ] HTML report with interactive visualization
 - [ ] More rules (regex backtracking, Vue reactivity, etc.)
 - [ ] Auto-fix capabilities
-- [ ] Configuration file support (vitals.config.ts)
+- [ ] Configuration file support (ceviz.config.ts)
 - [ ] VS Code extension
 - [ ] Custom rules API
 - [ ] Framework-specific rules (Nuxt useFetch, Next.js getServerSideProps, etc.)

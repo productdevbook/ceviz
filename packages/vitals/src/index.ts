@@ -14,7 +14,7 @@ export interface AnalyzeOptions extends ScanOptions {
 }
 
 /**
- * Main entry point for Vitals analyzer
+ * Main entry point for Ceviz analyzer
  *
  * @param projectRoot - Path to project root
  * @param options - Analysis options

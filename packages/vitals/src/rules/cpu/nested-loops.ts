@@ -65,7 +65,7 @@ export const nestedLoopsRule: Rule = {
           suggestion: {
             fix: 'Use Map/Set for O(1) lookups instead of nested loops',
             example: `// Instead of:\nfor (const user of users) {\n  for (const post of posts) {\n    if (post.userId === user.id) { ... }\n  }\n}\n\n// Use:\nconst postsByUser = new Map()\nfor (const post of posts) {\n  if (!postsByUser.has(post.userId)) {\n    postsByUser.set(post.userId, [])\n  }\n  postsByUser.get(post.userId).push(post)\n}\nfor (const user of users) {\n  const userPosts = postsByUser.get(user.id) || []\n  // ...\n}`,
-            docs: 'https://vitals.dev/rules/nested-loops',
+            docs: 'https://github.com/productdevbook/ceviz#nested-loops',
           },
           autoFixable: false,
           codeSnippet: {

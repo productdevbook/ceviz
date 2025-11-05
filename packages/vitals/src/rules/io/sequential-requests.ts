@@ -165,7 +165,7 @@ export const sequentialRequestsRule: Rule = {
         suggestion: {
           fix: 'Use Promise.all() to run these operations in parallel',
           example: `// Instead of:\nconst data1 = await fetch('/api/1')\nconst data2 = await fetch('/api/2')\nconst data3 = await fetch('/api/3')\n\n// Use:\nconst [data1, data2, data3] = await Promise.all([\n  fetch('/api/1'),\n  fetch('/api/2'),\n  fetch('/api/3')\n])`,
-          docs: 'https://vitals.dev/rules/sequential-requests',
+          docs: 'https://github.com/productdevbook/ceviz#sequential-requests',
         },
         autoFixable: false,
         codeSnippet: {

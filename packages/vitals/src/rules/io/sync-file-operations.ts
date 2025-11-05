@@ -85,7 +85,7 @@ export const syncFileOperationsRule: Rule = {
             suggestion: {
               fix: `Use async version: ${asyncAlternative}()`,
               example: `// Instead of:\nconst data = fs.${calleeName}('file.txt')\n\n// Use:\nconst data = await fs.promises.${asyncAlternative}('file.txt')\n// or\nfs.${asyncAlternative}('file.txt', (err, data) => {...})`,
-              docs: 'https://vitals.dev/rules/sync-file-operations',
+              docs: 'https://github.com/productdevbook/ceviz#sync-file-operations',
             },
             autoFixable: false,
             codeSnippet: {

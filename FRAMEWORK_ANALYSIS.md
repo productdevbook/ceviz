@@ -2,11 +2,11 @@
 
 ## Overview
 
-Vitals now supports **two modes**:
+Ceviz now supports **two modes**:
 
 ### Mode 1: User Code Analysis (Default)
 ```bash
-vitals analyze ./my-project
+ceviz analyze ./my-project
 ```
 - ✅ Analyzes **user's code** only
 - ❌ **Excludes** node_modules, dist, .nuxt, etc.
@@ -14,7 +14,7 @@ vitals analyze ./my-project
 
 ### Mode 2: Framework Analysis (New!)
 ```bash
-vitals analyze ./my-project --scan-deps --target-deps nuxt,vite
+ceviz analyze ./my-project --scan-deps --target-deps nuxt,vite
 ```
 - ✅ Analyzes **framework code** in node_modules
 - ✅ **Includes** specific packages (nuxt, vite, etc.)
@@ -25,31 +25,31 @@ vitals analyze ./my-project --scan-deps --target-deps nuxt,vite
 ### Analyze Nuxt Core
 ```bash
 # Using pnpm exec (recommended in monorepo)
-pnpm exec vitals analyze . --scan-deps --target-deps nuxt
+pnpm exec ceviz analyze . --scan-deps --target-deps nuxt
 
 # Or using node directly
 node packages/vitals/dist/cli.mjs analyze . --scan-deps --target-deps nuxt
 
 # Or if globally installed
-vitals analyze . --scan-deps --target-deps nuxt
+ceviz analyze . --scan-deps --target-deps nuxt
 ```
 
 ### Analyze Multiple Frameworks
 ```bash
-pnpm exec vitals analyze . --scan-deps --target-deps nuxt,vite,vue
+pnpm exec ceviz analyze . --scan-deps --target-deps nuxt,vite,vue
 ```
 
 ### Analyze Scoped Packages
 ```bash
-pnpm exec vitals analyze . --scan-deps --target-deps '@nuxt/*'
+pnpm exec ceviz analyze . --scan-deps --target-deps '@nuxt/*'
 ```
 
 ## Example: Finding Issues in Nuxt
 
 ```bash
-$ vitals analyze . --scan-deps --target-deps nuxt,@nuxt/*
+$ ceviz analyze . --scan-deps --target-deps nuxt,@nuxt/*
 
-🩺 Vitals Performance Analysis
+⚡ Ceviz Performance Analysis
 ────────────────────────────────────────────────────────────
 
 📊 Summary
@@ -95,21 +95,21 @@ $ vitals analyze . --scan-deps --target-deps nuxt,@nuxt/*
 You're working on Nuxt core and want to find performance issues:
 ```bash
 cd ~/nuxt/nuxt
-vitals analyze . --scan-deps --target-deps nuxt
+ceviz analyze . --scan-deps --target-deps nuxt
 ```
 
 ### 2. Report Issues to Framework
 Find performance problems to report:
 ```bash
 cd ~/my-app
-vitals analyze . --scan-deps --target-deps nuxt --json nuxt-issues.json
+ceviz analyze . --scan-deps --target-deps nuxt --json nuxt-issues.json
 # Review JSON and create GitHub issues
 ```
 
 ### 3. Compare Frameworks
 ```bash
-vitals analyze . --scan-deps --target-deps vite
-vitals analyze . --scan-deps --target-deps rollup
+ceviz analyze . --scan-deps --target-deps vite
+ceviz analyze . --scan-deps --target-deps rollup
 # Compare performance characteristics
 ```
 
@@ -168,16 +168,16 @@ Found performance issues in a framework? Here's how to report:
 
 1. Run analysis:
    ```bash
-   vitals analyze . --scan-deps --target-deps nuxt --json report.json
+   ceviz analyze . --scan-deps --target-deps nuxt --json report.json
    ```
 
 2. Review findings manually
 
 3. Create GitHub issue with:
    - File path and line number
-   - Issue description from Vitals
+   - Issue description from Ceviz
    - Suggested fix
-   - Link to Vitals report
+   - Link to Ceviz report
 
 ## Status
 
@@ -190,5 +190,5 @@ Found performance issues in a framework? Here's how to report:
 
 Try it now:
 ```bash
-vitals analyze . --scan-deps --target-deps nuxt
+ceviz analyze . --scan-deps --target-deps nuxt
 ```

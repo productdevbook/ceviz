@@ -104,7 +104,7 @@ export const memoryLeakIntervalRule: Rule = {
             example: context.isVue
               ? `// Vue:\nconst interval = setInterval(() => {...}, 1000)\nonUnmounted(() => {\n  clearInterval(interval)\n})`
               : `// React:\nuseEffect(() => {\n  const interval = setInterval(() => {...}, 1000)\n  return () => clearInterval(interval)\n}, [])`,
-            docs: 'https://vitals.dev/rules/memory-leak-interval',
+            docs: 'https://github.com/productdevbook/ceviz#memory-leak-interval',
           },
           autoFixable: false,
           codeSnippet: {
