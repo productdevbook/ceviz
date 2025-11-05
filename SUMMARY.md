@@ -1,4 +1,4 @@
-# ⚡ Ceviz - Performance Analyzer
+# 🌰 Ceviz - Performance Analyzer
 
 ## ✅ Completed Features
 

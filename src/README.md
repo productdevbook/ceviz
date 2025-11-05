@@ -1,8 +1,8 @@
 <div align="center">
 
-![Ceviz Banner](https://raw.githubusercontent.com/productdevbook/ceviz/main/assets/ceviz-banner.svg)
+![Ceviz Banner](https://raw.githubusercontent.com/productdevbook/ceviz/main/assets/ceviz-banner-v2.svg)
 
-# ⚡ Ceviz
+# 🌰 Ceviz
 
 **Lightning-fast performance analyzer for all npm packages**
 
@@ -10,7 +10,7 @@
 
 </div>
 
-Ceviz automatically scans your codebase and detects performance issues that slow down your application:
+🌰 Ceviz automatically scans your codebase and detects performance issues that slow down your application:
 
 - 🔍 **O(n²) and O(n³) complexity** - Nested loops and inefficient algorithms
 - 💾 **Memory leaks** - Unclosed intervals, event listeners, and memory bloat
@@ -26,7 +26,7 @@ Ceviz automatically scans your codebase and detects performance issues that slow
 - 📊 **Beautiful reports** - Console, JSON, and interactive HTML output
 - 🔧 **Actionable suggestions** - Get specific fixes for each issue
 - 🚀 **CI/CD ready** - Exit codes for automated checks
-- 🔌 **Plugin system** - Create custom rules and reporters
+- 🌰 **Plugin system** - Create custom rules and reporters
 - 🎨 **VSCode integration** - Click to open files from HTML reports
 
 ## Installation
