@@ -15,6 +15,7 @@ export const syncFileOperationsRule: Rule = {
   check: (context: RuleContext): Issue[] => {
     const issues: Issue[] = []
     const { ast, filePath, code } = context
+    const visited = new WeakSet<object>()
 
     const syncMethods = [
       // File system
@@ -45,6 +46,11 @@ export const syncFileOperationsRule: Rule = {
     const checkNode = (node: any): void => {
       if (!node || typeof node !== 'object')
         return
+
+      // Avoid circular references
+      if (visited.has(node))
+        return
+      visited.add(node)
 
       if (node.type === 'CallExpression') {
         const callee = node.callee

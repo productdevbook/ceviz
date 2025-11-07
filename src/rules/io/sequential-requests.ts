@@ -14,10 +14,16 @@ export const sequentialRequestsRule: Rule = {
   check: (context: RuleContext): Issue[] => {
     const issues: Issue[] = []
     const { ast, filePath, code } = context
+    const visited = new WeakSet<object>()
 
     const checkNode = (node: any, _parent: any = null): void => {
       if (!node || typeof node !== 'object')
         return
+
+      // Avoid circular references
+      if (visited.has(node))
+        return
+      visited.add(node)
 
       // Look for consecutive await statements
       if (node.type === 'BlockStatement' || node.type === 'Program') {
@@ -49,34 +55,38 @@ export const sequentialRequestsRule: Rule = {
 
       // Recurse
       for (const key in node) {
-        if (key === 'type' || key === 'loc' || key === 'range')
+        if (key === 'type' || key === 'loc' || key === 'range' || key === 'parent')
           continue
         const value = node[key]
         if (Array.isArray(value)) {
           value.forEach(child => checkNode(child, node))
         }
-        else if (typeof value === 'object') {
+        else if (typeof value === 'object' && value !== null) {
           checkNode(value, node)
         }
       }
     }
 
-    function containsAwait(node: any): boolean {
-      if (!node)
+    function containsAwait(node: any, visitedAwait = new WeakSet<object>()): boolean {
+      if (!node || typeof node !== 'object')
         return false
+      if (visitedAwait.has(node))
+        return false
+      visitedAwait.add(node)
+
       if (node.type === 'AwaitExpression')
         return true
 
       for (const key in node) {
-        if (key === 'type' || key === 'loc' || key === 'range')
+        if (key === 'type' || key === 'loc' || key === 'range' || key === 'parent')
           continue
         const value = node[key]
         if (Array.isArray(value)) {
-          if (value.some(containsAwait))
+          if (value.some(v => containsAwait(v, visitedAwait)))
             return true
         }
-        else if (typeof value === 'object') {
-          if (containsAwait(value))
+        else if (typeof value === 'object' && value !== null) {
+          if (containsAwait(value, visitedAwait))
             return true
         }
       }
@@ -126,21 +136,26 @@ export const sequentialRequestsRule: Rule = {
 
     function getRightHandVariables(node: any): Set<string> {
       const vars = new Set<string>()
+      const visitedExtract = new WeakSet<object>()
 
       const extract = (n: any): void => {
-        if (!n)
+        if (!n || typeof n !== 'object')
           return
+        if (visitedExtract.has(n))
+          return
+        visitedExtract.add(n)
+
         if (n.type === 'Identifier') {
           vars.add(n.name)
         }
         for (const key in n) {
-          if (key === 'type' || key === 'loc' || key === 'range' || key === 'id')
+          if (key === 'type' || key === 'loc' || key === 'range' || key === 'id' || key === 'parent')
             continue
           const value = n[key]
           if (Array.isArray(value)) {
             value.forEach(extract)
           }
-          else if (typeof value === 'object') {
+          else if (typeof value === 'object' && value !== null) {
             extract(value)
           }
         }

@@ -331,6 +331,52 @@ export default defineConfig({
 
 See [PLUGIN_API.md](PLUGIN_API.md) for complete plugin documentation.
 
+## ESLint Plugin
+
+Ceviz provides an ESLint plugin to catch performance issues during development:
+
+```bash
+pnpm add -D eslint-plugin-ceviz
+```
+
+### Recommended Config
+
+```javascript
+// eslint.config.js
+import ceviz from 'eslint-plugin-ceviz'
+
+export default [
+  {
+    plugins: { ceviz },
+    ...ceviz.configs.recommended,
+  },
+]
+```
+
+### Manual Config
+
+```javascript
+// eslint.config.js
+import ceviz from 'eslint-plugin-ceviz'
+
+export default [
+  {
+    plugins: { ceviz },
+    rules: {
+      'ceviz/array-find-in-loop': 'error',
+      'ceviz/nested-loops': 'error',
+      'ceviz/memory-leak-interval': 'error',
+      'ceviz/sequential-requests': 'warn',
+      'ceviz/sync-file-operations': 'error',
+    },
+  },
+]
+```
+
+**Configs:** `recommended` (critical rules), `strict` (all errors), `all` (all warnings).
+
+All 5 core Ceviz rules are available as ESLint rules, providing real-time feedback in your editor.
+
 ## CI/CD Integration
 
 Ceviz exits with code 1 if critical issues are found, making it perfect for CI/CD:

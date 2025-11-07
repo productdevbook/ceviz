@@ -2,14 +2,14 @@
   "name": "ceviz",
   "type": "module",
   "version": "0.0.3",
+  "private": true,
   "description": "Lightning-fast performance analyzer for all npm packages - Ceviz ⚡",
   "author": "productdevbook",
   "license": "MIT",
   "homepage": "https://github.com/productdevbook/ceviz#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/productdevbook/ceviz.git",
-    "directory": "src"
+    "url": "https://github.com/productdevbook/ceviz.git"
   },
   "bugs": {
     "url": "https://github.com/productdevbook/ceviz/issues"
@@ -25,36 +25,18 @@
     "lint",
     "static-analysis"
   ],
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.mts",
-      "import": "./dist/index.mjs"
-    }
-  },
-  "main": "./dist/index.mjs",
-  "types": "./dist/index.d.mts",
-  "bin": {
-    "ceviz": "./dist/cli.mjs"
-  },
   "scripts": {
-    "build": "tsdown",
-    "dev": "tsdown --watch",
-    "release": "pnpm build && pnpm publish --no-git-checks --access public",
-    "analyze": "pnpm build && node dist/cli.mjs analyze",
-    "bumpp": "bumpp package.json",
+    "build": "pnpm --filter ceviz build && pnpm --filter eslint-plugin-ceviz build",
+    "build:core": "pnpm --filter ceviz build",
+    "build:eslint-plugin": "pnpm --filter eslint-plugin-ceviz build",
+    "dev": "pnpm --filter ceviz dev",
+    "test": "pnpm --filter eslint-plugin-ceviz test",
+    "test:eslint-plugin": "pnpm --filter eslint-plugin-ceviz test",
+    "release": "pnpm build && pnpm --filter ceviz publish --no-git-checks --access public",
+    "analyze": "pnpm build && node src/dist/cli.mjs analyze",
+    "bumpp": "bumpp src/package.json",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
-  },
-  "dependencies": {
-    "c12": "^3.3.1",
-    "chalk": "^5.6.2",
-    "commander": "^14.0.2",
-    "glob": "^11.0.3",
-    "hookable": "^5.5.3",
-    "open": "^10.2.0",
-    "ora": "^9.0.0",
-    "oxc-parser": "^0.96.0",
-    "oxc-transform": "^0.96.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^6.2.0",

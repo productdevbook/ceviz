@@ -15,10 +15,16 @@ export const nestedLoopsRule: Rule = {
   check: (context: RuleContext): Issue[] => {
     const issues: Issue[] = []
     const { ast, filePath, code } = context
+    const visited = new WeakSet<object>()
 
     const checkNode = (node: any, loopDepth = 0): void => {
       if (!node || typeof node !== 'object')
         return
+
+      // Avoid circular references
+      if (visited.has(node))
+        return
+      visited.add(node)
 
       // Check if this is a loop
       const isLoop
@@ -80,13 +86,13 @@ export const nestedLoopsRule: Rule = {
 
       // Recursively check all child nodes
       for (const key in node) {
-        if (key === 'type' || key === 'loc' || key === 'range')
+        if (key === 'type' || key === 'loc' || key === 'range' || key === 'parent' || key === 'tokens' || key === 'comments')
           continue
         const value = node[key]
         if (Array.isArray(value)) {
           value.forEach(child => checkNode(child, newDepth))
         }
-        else if (typeof value === 'object') {
+        else if (typeof value === 'object' && value !== null) {
           checkNode(value, newDepth)
         }
       }

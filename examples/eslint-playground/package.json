@@ -1,0 +1,13 @@
+{
+  "name": "eslint-playground",
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "devDependencies": {
+    "eslint": "^9.0.0",
+    "eslint-plugin-ceviz": "workspace:*"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "name": "eslint-plugin-ceviz",
+  "type": "module",
+  "version": "0.0.1",
+  "description": "ESLint plugin for performance analysis rules powered by Ceviz",
+  "author": "productdevbook",
+  "license": "MIT",
+  "homepage": "https://github.com/productdevbook/ceviz#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/productdevbook/ceviz.git",
+    "directory": "plugins/eslint-plugin"
+  },
+  "bugs": {
+    "url": "https://github.com/productdevbook/ceviz/issues"
+  },
+  "keywords": [
+    "eslint",
+    "eslint-plugin",
+    "performance",
+    "optimization",
+    "ceviz",
+    "static-analysis"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "test": "vitest"
+  },
+  "peerDependencies": {
+    "eslint": ">=8.0.0"
+  },
+  "dependencies": {
+    "ceviz": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/eslint": "^9.6.1"
+  }
+}

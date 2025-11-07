@@ -1,0 +1,54 @@
+{
+  "name": "ceviz",
+  "type": "module",
+  "version": "0.0.3",
+  "description": "Lightning-fast performance analyzer for all npm packages - Ceviz ⚡",
+  "author": "productdevbook",
+  "license": "MIT",
+  "homepage": "https://github.com/productdevbook/ceviz#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/productdevbook/ceviz.git",
+    "directory": "src"
+  },
+  "bugs": {
+    "url": "https://github.com/productdevbook/ceviz/issues"
+  },
+  "keywords": [
+    "performance",
+    "analyzer",
+    "profiler",
+    "optimization",
+    "complexity",
+    "memory-leak",
+    "async",
+    "lint",
+    "static-analysis"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "bin": {
+    "ceviz": "./dist/cli.mjs"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch"
+  },
+  "dependencies": {
+    "c12": "^3.3.1",
+    "chalk": "^5.6.2",
+    "commander": "^14.0.2",
+    "glob": "^11.0.3",
+    "hookable": "^5.5.3",
+    "open": "^10.2.0",
+    "ora": "^9.0.0",
+    "oxc-parser": "^0.96.0",
+    "oxc-transform": "^0.96.0"
+  }
+}

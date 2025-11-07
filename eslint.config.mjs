@@ -31,6 +31,10 @@ export default antfu({
     // Test projects
     '**/examples/test-project/**',
     '**/examples/nuxt-test/**',
+    '**/examples/eslint-playground/**',
+
+    // Test fixtures (intentionally bad code)
+    '**/test/fixtures/**',
 
     // Documentation
     'README.md',
@@ -39,6 +43,7 @@ export default antfu({
     'SUMMARY.md',
     'FRAMEWORK_ANALYSIS.md',
     'PLUGIN_API.md',
+    '**/README.md',
   ],
 }, {
   rules: {

@@ -77,7 +77,8 @@ export const arrayFindInLoopRule: Rule = {
 
       // Recursively check children
       for (const key in node) {
-        if (key === 'type' || key === 'loc' || key === 'range')
+        // Skip metadata properties and 'parent' (circular ref in ESLint AST)
+        if (key === 'type' || key === 'loc' || key === 'range' || key === 'parent')
           continue
         const value = node[key]
         if (Array.isArray(value)) {
