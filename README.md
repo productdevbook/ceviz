@@ -376,7 +376,6 @@ Run `ceviz analyze --html` to generate an interactive HTML report with detailed 
 - **Rolldown** - Next-gen bundler for bundle analysis
 - **TypeScript** - Type-safe codebase
 - **Commander** - CLI interface
-- **Chalk** - Beautiful console output
 
 ## Contributing
 

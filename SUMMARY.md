@@ -37,7 +37,7 @@
 - ✅ **Commands** - `ceviz analyze [path]`
 - ✅ **Options** - `--json [file]` for JSON output
 - ✅ **Exit codes** - Returns 1 for critical issues (CI/CD ready)
-- ✅ **Spinner & colors** - Beautiful UX with ora + chalk
+- ✅ **Spinner & colors** - Beautiful UX with ora + terminal colors
 
 ## 📊 Test Results
 
