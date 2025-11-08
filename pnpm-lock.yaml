@@ -11,9 +11,6 @@ importers:
       c12:
         specifier: ^3.3.1
         version: 3.3.1(magicast@0.3.5)
-      chalk:
-        specifier: ^5.6.2
-        version: 5.6.2
       commander:
         specifier: ^14.0.2
         version: 14.0.2
