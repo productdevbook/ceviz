@@ -6,7 +6,12 @@ import { ProjectScanner } from './scanner.js'
 
 export { CodeAnalyzer } from './analyzer.js'
 export { defineConfig, mergeConfig, resolveConfig } from './config.js'
+export { arrayFindInLoopRule } from './rules/cpu/array-find-in-loop.js'
+export { nestedLoopsRule } from './rules/cpu/nested-loops.js'
 export { allRules } from './rules/index.js'
+export { sequentialRequestsRule } from './rules/io/sequential-requests.js'
+export { syncFileOperationsRule } from './rules/io/sync-file-operations.js'
+export { memoryLeakIntervalRule } from './rules/memory/memory-leak-interval.js'
 export { ProjectScanner, type ScanOptions } from './scanner.js'
 export * from './types.js'
 

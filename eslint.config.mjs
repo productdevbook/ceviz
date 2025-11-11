@@ -1,4 +1,5 @@
 import antfu from '@antfu/eslint-config'
+import ceviz from 'eslint-plugin-ceviz'
 
 export default antfu({
   ignores: [
@@ -31,14 +32,18 @@ export default antfu({
     // Test projects
     '**/examples/test-project/**',
     '**/examples/nuxt-test/**',
+    '**/examples/eslint/**',
+    'docs/**',
 
     // Documentation
     'README.md',
+    'ESLINT_DOCS.md',
     'CONTRIBUTING.md',
     'CLAUDE.md',
     'SUMMARY.md',
     'FRAMEWORK_ANALYSIS.md',
     'PLUGIN_API.md',
+    'plugins/eslint-plugin/README.md',
   ],
 }, {
   rules: {
@@ -52,11 +57,26 @@ export default antfu({
   files: [
     '**/test-project/**/*.{ts,js,mjs,cjs}',
     '**/nuxt-test/**/*.{ts,js,mjs,cjs}',
+    '**/test/fixtures/**/*.js',
+    '**/examples/*/test.js',
   ],
   rules: {
     'no-console': 'off',
     'unused-imports/no-unused-vars': 'off',
+    'no-unused-vars': 'off',
+    'no-undef': 'off',
     'no-var': 'off',
     'prefer-const': 'off',
+  },
+}, {
+  files: [
+    'plugins/eslint-plugin/src/**/*.{ts,tsx,js,jsx,mjs,cjs}',
+  ],
+  plugins: {
+    ceviz,
+  },
+  rules: {
+    ...ceviz.configs.recommended.rules,
+    'ceviz/sync-file-operations': 'off',
   },
 })
