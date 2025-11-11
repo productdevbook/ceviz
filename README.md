@@ -42,6 +42,23 @@ pnpm add -g ceviz
 pnpm add -D ceviz
 ```
 
+## ESLint Plugin
+
+Real-time performance linting in your editor:
+
+```bash
+pnpm add -D eslint-plugin-ceviz
+```
+
+```javascript
+// eslint.config.js
+import ceviz from 'eslint-plugin-ceviz'
+
+export default [ceviz.configs.recommended]
+```
+
+See [eslint-plugin-ceviz](packages/eslint-plugin-ceviz) for details.
+
 ## Usage
 
 ### Basic Analysis (User Code)

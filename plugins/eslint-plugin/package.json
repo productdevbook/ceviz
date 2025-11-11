@@ -1,0 +1,49 @@
+{
+  "name": "eslint-plugin-ceviz",
+  "type": "module",
+  "version": "0.0.3",
+  "description": "ESLint plugin for Ceviz performance analysis",
+  "author": "productdevbook",
+  "license": "MIT",
+  "keywords": [
+    "eslint",
+    "eslint-plugin",
+    "performance",
+    "ceviz"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "typegen": "tsx scripts/typegen.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "peerDependencies": {
+    "eslint": "^9.0.0"
+  },
+  "dependencies": {
+    "ceviz-core": "workspace:*",
+    "eslint-flat-config-utils": "^0.4.0",
+    "oxc-parser": "^0.96.0"
+  },
+  "devDependencies": {
+    "@types/eslint": "^9.6.1",
+    "@types/node": "^22.19.0",
+    "@vitest/coverage-v8": "^4.0.7",
+    "eslint": "^9.39.1",
+    "eslint-typegen": "^0.3.2",
+    "tsdown": "^0.16.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.7"
+  }
+}

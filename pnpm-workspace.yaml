@@ -1,3 +1,5 @@
 packages:
-  - 'examples/*'
   - src
+  - 'plugins/*'
+  - 'examples/*'
+  - playground

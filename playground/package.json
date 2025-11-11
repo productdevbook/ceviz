@@ -1,0 +1,12 @@
+{
+  "name": "playground",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "eslint": "^9.39.1",
+    "eslint-plugin-ceviz": "workspace:*"
+  },
+  "scripts": {
+    "lint": "eslint ."
+  }
+}
