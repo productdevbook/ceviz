@@ -26,4 +26,4 @@ jobs:
         run: pnpm build
 
       - name: Publish to pkg.pr.new
-        run: pnpm dlx pkg-pr-new publish --compact --comment=update './src' './cli' './plugins/eslint-plugin'
+        run: pnpm dlx pkg-pr-new publish --compact --comment=update './src' './plugins/eslint-plugin'
