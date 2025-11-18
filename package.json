@@ -1,19 +1,12 @@
 {
   "name": "ceviz",
   "type": "module",
-  "version": "0.0.3",
-  "description": "Lightning-fast performance analyzer for all npm packages - Ceviz ⚡",
+  "version": "0.0.4",
+  "private": false,
+  "packageManager": "pnpm@10.22.0",
+  "description": "Core performance analysis rules for Ceviz",
   "author": "productdevbook",
   "license": "MIT",
-  "homepage": "https://github.com/productdevbook/ceviz#readme",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/productdevbook/ceviz.git",
-    "directory": "src"
-  },
-  "bugs": {
-    "url": "https://github.com/productdevbook/ceviz/issues"
-  },
   "keywords": [
     "performance",
     "analyzer",
@@ -37,31 +30,36 @@
     "ceviz": "./dist/cli.mjs"
   },
   "scripts": {
-    "build": "tsdown",
+    "build": "tsdown && pnpm --filter eslint-plugin-ceviz build",
     "dev": "tsdown --watch",
-    "release": "pnpm build && pnpm publish --no-git-checks --access public",
     "analyze": "pnpm build && node dist/cli.mjs analyze",
-    "bumpp": "bumpp package.json",
+    "test": "pnpm --filter eslint-plugin-ceviz test",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "bumpp": "bumpp package.json plugins/eslint-plugin/package.json --execute='pnpm build' --commit='chore: release v%s\n\nPackages:\n- ceviz@%s\n- eslint-plugin-ceviz@%s' --tag --push",
+    "publish:ceviz": "pnpm publish --no-git-checks --access public",
+    "publish:eslint": "pnpm --filter eslint-plugin-ceviz publish --no-git-checks --access public",
+    "publish:all": "pnpm publish:ceviz && pnpm publish:eslint",
+    "release": "pnpm bumpp && pnpm publish:all"
   },
   "dependencies": {
-    "c12": "^3.3.1",
+    "c12": "^3.3.2",
     "commander": "^14.0.2",
-    "glob": "^11.0.3",
+    "glob": "^12.0.0",
     "hookable": "^5.5.3",
-    "open": "^10.2.0",
+    "open": "^11.0.0",
     "ora": "^9.0.0",
-    "oxc-parser": "^0.96.0",
-    "oxc-transform": "^0.96.0"
+    "oxc-parser": "^0.98.0",
+    "oxc-transform": "^0.98.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^6.2.0",
-    "@types/node": "^22.19.0",
+    "@types/node": "^22.19.1",
     "bumpp": "^10.3.1",
     "eslint": "^9.39.1",
-    "tsdown": "^0.16.0",
+    "eslint-plugin-ceviz": "workspace:*",
+    "tsdown": "^0.16.5",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.7"
+    "vitest": "^4.0.10"
   }
 }
