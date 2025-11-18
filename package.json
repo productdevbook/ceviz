@@ -1,7 +1,7 @@
 {
   "name": "ceviz",
   "type": "module",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "private": false,
   "packageManager": "pnpm@10.22.0",
   "description": "Core performance analysis rules for Ceviz",
