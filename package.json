@@ -2,25 +2,62 @@
   "name": "ceviz",
   "type": "module",
   "version": "0.0.3",
-  "private": true,
-  "packageManager": "pnpm@10.20.0",
-  "author": "",
+  "private": false,
+  "packageManager": "pnpm@10.22.0",
+  "description": "Core performance analysis rules for Ceviz",
+  "author": "productdevbook",
   "license": "MIT",
-  "keywords": [],
+  "keywords": [
+    "performance",
+    "analyzer",
+    "profiler",
+    "optimization",
+    "complexity",
+    "memory-leak",
+    "async",
+    "lint",
+    "static-analysis"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "bin": {
+    "ceviz": "./dist/cli.mjs"
+  },
   "scripts": {
-    "build": "pnpm --filter ceviz-core build && pnpm --filter eslint-plugin-ceviz build && pnpm --filter ceviz build",
-    "dev": "pnpm --filter ceviz dev",
-    "analyze": "pnpm --filter ceviz build && node src/dist/cli.mjs analyze",
+    "build": "tsdown && pnpm --filter eslint-plugin-ceviz build",
+    "dev": "tsdown --watch",
+    "analyze": "pnpm build && node dist/cli.mjs analyze",
     "test": "pnpm --filter eslint-plugin-ceviz test",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "bumpp": "bumpp package.json src/package.json",
-    "release": "pnpm bumpp && cd src && pnpm pu:release"
+    "bumpp": "bumpp package.json",
+    "release": "pnpm bumpp && pnpm build && pnpm publish --no-git-checks --access public"
   },
   "dependencies": {
+    "c12": "^3.3.2",
+    "chalk": "^5.6.2",
+    "commander": "^14.0.2",
+    "glob": "^12.0.0",
+    "hookable": "^5.5.3",
+    "open": "^11.0.0",
+    "ora": "^9.0.0",
+    "oxc-parser": "^0.98.0",
+    "oxc-transform": "^0.98.0"
+  },
+  "devDependencies": {
     "@antfu/eslint-config": "^6.2.0",
+    "@types/node": "^22.19.1",
     "bumpp": "^10.3.1",
     "eslint": "^9.39.1",
-    "eslint-plugin-ceviz": "workspace:*"
+    "eslint-plugin-ceviz": "workspace:*",
+    "tsdown": "^0.16.5",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.10"
   }
 }

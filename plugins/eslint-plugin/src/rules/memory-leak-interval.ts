@@ -1,5 +1,5 @@
 import type { Rule } from 'eslint'
-import { memoryLeakIntervalRule } from 'ceviz-core'
+import { memoryLeakIntervalRule } from 'ceviz'
 import { createCevizContext } from '../bridge.js'
 import { convertIssueToMessage } from '../converter.js'
 

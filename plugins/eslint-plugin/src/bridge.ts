@@ -1,4 +1,4 @@
-import type { RuleContext as CevizRuleContext } from 'ceviz-core'
+import type { RuleContext as CevizRuleContext } from 'ceviz'
 import type { Rule } from 'eslint'
 import fs from 'node:fs'
 import path from 'node:path'

@@ -1,6 +1,6 @@
 import type { AnalysisResult, FileAnalysis, Issue, Metrics, ProjectContext, Rule, RuleContext, Summary } from './types.js'
 import { readFileSync } from 'node:fs'
-import { parseAsync } from 'oxc-parser'
+import { parseSync } from 'oxc-parser'
 
 export class CodeAnalyzer {
   private rules: Rule[] = []
@@ -14,14 +14,15 @@ export class CodeAnalyzer {
   /**
    * Analyze a single file
    */
-  async analyzeFile(filePath: string): Promise<FileAnalysis> {
+  analyzeFile(filePath: string): FileAnalysis {
     const content = readFileSync(filePath, 'utf-8')
     const lines = content.split('\n').length
 
     let parseResult: any
     try {
       // Parse with OXC (super fast!)
-      parseResult = await parseAsync(filePath, content, {
+      parseResult = parseSync(content, {
+        sourceFilename: filePath,
         sourceType: 'module',
       })
     }
@@ -76,13 +77,13 @@ export class CodeAnalyzer {
   /**
    * Analyze multiple files
    */
-  async analyzeFiles(files: string[]): Promise<AnalysisResult> {
+  analyzeFiles(files: string[]): AnalysisResult {
     const startTime = Date.now()
     const fileAnalyses: FileAnalysis[] = []
     const allIssues: Issue[] = []
 
     for (const file of files) {
-      const analysis = await this.analyzeFile(file)
+      const analysis = this.analyzeFile(file)
       fileAnalyses.push(analysis)
       allIssues.push(...analysis.issues)
     }

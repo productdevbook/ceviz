@@ -1,5 +1,5 @@
 import type { Rule } from 'eslint'
-import { arrayFindInLoopRule } from 'ceviz-core'
+import { arrayFindInLoopRule } from 'ceviz'
 import { createCevizContext } from '../bridge.js'
 import { convertIssueToMessage } from '../converter.js'
 

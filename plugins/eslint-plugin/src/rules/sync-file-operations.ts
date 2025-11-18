@@ -1,5 +1,5 @@
 import type { Rule } from 'eslint'
-import { syncFileOperationsRule } from 'ceviz-core'
+import { syncFileOperationsRule } from 'ceviz'
 import { createCevizContext } from '../bridge.js'
 import { convertIssueToMessage } from '../converter.js'
 

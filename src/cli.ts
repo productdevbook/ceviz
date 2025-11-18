@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
-import { resolve } from 'node:path'
+import { readFileSync } from 'node:fs'
+import { dirname, join, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import chalk from 'chalk'
 import { Command } from 'commander'
 import ora from 'ora'
@@ -10,12 +12,18 @@ import { ConsoleReporter } from './reporters/console-reporter.js'
 import { HtmlReporter } from './reporters/html-reporter.js'
 import { JsonReporter } from './reporters/json-reporter.js'
 
+// Read version from package.json
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+const packageJsonPath = join(__dirname, '../package.json')
+const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'))
+
 const program = new Command()
 
 program
   .name('ceviz')
   .description('⚡ Ceviz - Lightning-fast performance analyzer for Node.js/Nuxt projects')
-  .version('0.1.0')
+  .version(packageJson.version)
 
 program
   .command('analyze [path]')
