@@ -36,8 +36,11 @@
     "test": "pnpm --filter eslint-plugin-ceviz test",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "bumpp": "bumpp package.json",
-    "release": "pnpm bumpp && pnpm build && pnpm publish --no-git-checks --access public"
+    "bumpp": "bumpp package.json plugins/eslint-plugin/package.json --execute='pnpm build' --commit='chore: release v%s\n\nPackages:\n- ceviz@%s\n- eslint-plugin-ceviz@%s' --tag --push",
+    "publish:ceviz": "pnpm publish --no-git-checks --access public",
+    "publish:eslint": "pnpm --filter eslint-plugin-ceviz publish --no-git-checks --access public",
+    "publish:all": "pnpm publish:ceviz && pnpm publish:eslint",
+    "release": "pnpm bumpp && pnpm publish:all"
   },
   "dependencies": {
     "c12": "^3.3.2",
