@@ -1,5 +1,5 @@
 import type { Rule } from 'eslint'
-import { sequentialRequestsRule } from 'ceviz-core'
+import { sequentialRequestsRule } from 'ceviz'
 import { createCevizContext } from '../bridge.js'
 import { convertIssueToMessage } from '../converter.js'
 

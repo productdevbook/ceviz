@@ -38,7 +38,7 @@ export async function analyzeProject(
 
   // 2. Analyze files
   const analyzer = new CodeAnalyzer(projectContext, allRules)
-  const result = await analyzer.analyzeFiles(files)
+  const result = analyzer.analyzeFiles(files)
 
   return result
 }

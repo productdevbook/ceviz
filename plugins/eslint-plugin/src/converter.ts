@@ -1,4 +1,4 @@
-import type { Issue } from 'ceviz-core'
+import type { Issue } from 'ceviz'
 
 export interface ESLintMessage {
   message: string

@@ -32,19 +32,19 @@
     "eslint": "^9.0.0"
   },
   "dependencies": {
-    "ceviz-core": "workspace:*",
-    "eslint-flat-config-utils": "^0.4.0",
-    "oxc-parser": "^0.96.0"
+    "ceviz": "workspace:*",
+    "eslint-flat-config-utils": "^2.1.4",
+    "oxc-parser": "^0.98.0"
   },
   "devDependencies": {
     "@types/eslint": "^9.6.1",
-    "@types/node": "^22.19.0",
-    "@vitest/coverage-v8": "^4.0.7",
+    "@types/node": "^22.19.1",
+    "@vitest/coverage-v8": "^4.0.10",
     "eslint": "^9.39.1",
-    "eslint-typegen": "^0.3.2",
-    "tsdown": "^0.16.0",
-    "tsx": "^4.19.2",
+    "eslint-typegen": "^2.3.0",
+    "tsdown": "^0.16.5",
+    "tsx": "^4.20.6",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.7"
+    "vitest": "^4.0.10"
   }
 }
