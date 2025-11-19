@@ -1,7 +1,7 @@
 import type { AnalysisResult, FileAnalysis, Issue, Metrics, ProjectContext, Rule, RuleContext, Summary } from './types.js'
 import { readFileSync } from 'node:fs'
 import { parseSync } from 'oxc-parser'
-
+import { logger } from './utils/logger.js'
 export class CodeAnalyzer {
   private rules: Rule[] = []
   private projectContext: ProjectContext
@@ -58,7 +58,7 @@ export class CodeAnalyzer {
         issues.push(...ruleIssues)
       }
       catch (error) {
-        console.error(`Rule ${rule.id} failed on ${filePath}:`, error)
+        logger.error(`Rule ${rule.id} failed on ${filePath}:`, error)
       }
     }
 
