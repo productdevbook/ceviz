@@ -10,7 +10,7 @@ import { analyzeProject } from './index.js'
 import { ConsoleReporter } from './reporters/console-reporter.js'
 import { HtmlReporter } from './reporters/html-reporter.js'
 import { JsonReporter } from './reporters/json-reporter.js'
-import termColors from './utils/colors.js'
+import { colors as consolaTermColors } from "consola/utils"
 
 // Read version from package.json
 const __filename = fileURLToPath(import.meta.url)
@@ -61,8 +61,8 @@ program
 
     const spinner = ora({
       text: config.scanDeps
-        ? termColors.cyan('Scanning framework code in node_modules...')
-        : termColors.cyan('Scanning project...'),
+        ? consolaTermColors.cyan('Scanning framework code in node_modules...')
+        : consolaTermColors.cyan('Scanning project...'),
       color: 'cyan',
     }).start()
 
@@ -73,7 +73,7 @@ program
         targetDeps: config.targetDeps,
       })
 
-      spinner.succeed(termColors.green('Analysis complete!'))
+      spinner.succeed(consolaTermColors.green('Analysis complete!'))
 
       // Output
       if (options.html) {
@@ -105,8 +105,8 @@ program
       }
     }
     catch (error) {
-      spinner.fail(termColors.red('Analysis failed'))
-      console.error(termColors.red('\n❌ Error:'), error)
+      spinner.fail(consolaTermColors.red('Analysis failed'))
+      console.error(consolaTermColors.red('\n❌ Error:'), error)
       process.exit(1)
     }
   })
