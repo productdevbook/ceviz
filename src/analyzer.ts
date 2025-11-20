@@ -2,6 +2,7 @@ import type { AnalysisResult, FileAnalysis, Issue, Metrics, ProjectContext, Rule
 import { readFileSync } from 'node:fs'
 import { parseSync } from 'oxc-parser'
 import { logger } from './utils/logger.js'
+
 export class CodeAnalyzer {
   private rules: Rule[] = []
   private projectContext: ProjectContext

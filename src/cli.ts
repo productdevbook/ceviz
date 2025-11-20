@@ -4,13 +4,13 @@ import { readFileSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { Command } from 'commander'
+import { colors as consolaTermColors } from 'consola/utils'
 import ora from 'ora'
 import { mergeConfig, resolveConfig } from './config.js'
 import { analyzeProject } from './index.js'
 import { ConsoleReporter } from './reporters/console-reporter.js'
 import { HtmlReporter } from './reporters/html-reporter.js'
 import { JsonReporter } from './reporters/json-reporter.js'
-import { colors as consolaTermColors } from "consola/utils"
 import { logger } from './utils/logger.js'
 // Read version from package.json
 const __filename = fileURLToPath(import.meta.url)
@@ -72,7 +72,6 @@ program
         scanDeps: config.scanDeps,
         targetDeps: config.targetDeps,
       })
-
       spinner.succeed(consolaTermColors.green('Analysis complete!'))
 
       // Output

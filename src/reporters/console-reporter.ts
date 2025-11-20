@@ -1,7 +1,7 @@
 import type { AnalysisResult, Issue } from '../types.js'
-import { colors as consolaTermColors } from "consola/utils"
-import { logger } from '../utils/logger.js'
+import { colors as consolaTermColors } from 'consola/utils'
 import termColors from '../utils/colors.js'
+import { logger } from '../utils/logger.js'
 
 export class ConsoleReporter {
   report(result: AnalysisResult): void {
@@ -247,7 +247,7 @@ export class ConsoleReporter {
       return consolaTermColors.yellow(consolaTermColors.bold(value))
     if (score >= 60)
       return consolaTermColors.bold(termColors.orange(value))
-      return consolaTermColors.red(consolaTermColors.bold(value))
+    return consolaTermColors.red(consolaTermColors.bold(value))
   }
 
   private getGradeEmoji(grade: string): string {
@@ -260,7 +260,7 @@ export class ConsoleReporter {
       return consolaTermColors.green(String(value))
     if (count < 5)
       return consolaTermColors.yellow(String(value))
-      return consolaTermColors.red(String(value))
+    return consolaTermColors.red(String(value))
   }
 
   private getIssueIcon(category: string): string {
@@ -279,7 +279,7 @@ export class ConsoleReporter {
       return consolaTermColors.green(level)
     if (level === 'medium')
       return consolaTermColors.yellow(level)
-      return consolaTermColors.red(level)
+    return consolaTermColors.red(level)
   }
 
   private formatBytes(bytes: number): string {
