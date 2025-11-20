@@ -1,9 +1,11 @@
 import type { AnalysisResult, Issue } from '../types.js'
-import chalk from 'chalk'
+import { colors as consolaTermColors } from 'consola/utils'
+import termColors from '../utils/colors.js'
+import { logger } from '../utils/logger.js'
 
 export class ConsoleReporter {
   report(result: AnalysisResult): void {
-    console.log('\n')
+    logger.log('\n')
     this.printHeader()
     this.printSummary(result)
     this.printIssues(result)
@@ -12,33 +14,49 @@ export class ConsoleReporter {
   }
 
   private printHeader(): void {
-    console.log(chalk.bold.cyan('⚡ Ceviz Performance Analysis'))
-    console.log(chalk.gray('─'.repeat(60)))
+    logger.log(
+      consolaTermColors.cyan(consolaTermColors.bold('⚡ Ceviz Performance Analysis')),
+    )
+    logger.log(consolaTermColors.gray('─'.repeat(60)))
   }
 
   private printSummary(result: AnalysisResult): void {
     const { summary } = result
 
-    console.log(`\n${chalk.bold('📊 Summary')}`)
-    console.log(chalk.gray('─'.repeat(60)))
+    logger.log(`\n${consolaTermColors.bold('📊 Summary')}`)
+    logger.log(consolaTermColors.gray('─'.repeat(60)))
 
     const scoreColor = this.getScoreColor(summary.score)
     const gradeEmoji = this.getGradeEmoji(summary.grade)
 
-    console.log(`  Files analyzed:     ${chalk.white(summary.analyzedFiles)}`)
-    console.log(`  Total issues:       ${this.getIssueColor(summary.totalIssues, summary.totalIssues)}`)
-    console.log(`    ${chalk.red('●')} Critical:      ${chalk.red(summary.critical)}`)
-    console.log(`    ${chalk.yellow('●')} Warnings:      ${chalk.yellow(summary.warnings)}`)
-    console.log(`    ${chalk.blue('●')} Info:          ${chalk.blue(summary.info)}`)
-    console.log(`  Performance score:  ${scoreColor(summary.score)}/100 ${gradeEmoji}`)
-    console.log(`  Analysis time:      ${chalk.white(result.duration)}ms`)
+    logger.log(
+      `  Files analyzed:     ${consolaTermColors.white(String(summary.analyzedFiles))}`,
+    )
+    logger.log(
+      `  Total issues:       ${this.getIssueColor(summary.totalIssues, summary.totalIssues)}`,
+    )
+    logger.log(
+      `    ${consolaTermColors.red('●')} Critical:      ${consolaTermColors.red(String(summary.critical))}`,
+    )
+    logger.log(
+      `    ${consolaTermColors.yellow('●')} Warnings:      ${consolaTermColors.yellow(String(summary.warnings))}`,
+    )
+    logger.log(
+      `    ${consolaTermColors.blue('●')} Info:          ${consolaTermColors.blue(String(summary.info))}`,
+    )
+    logger.log(`  Performance score:  ${scoreColor}/100 ${gradeEmoji}`)
+    logger.log(
+      `  Analysis time:      ${consolaTermColors.white(String(result.duration))}ms`,
+    )
   }
 
   private printIssues(result: AnalysisResult): void {
     const { issues } = result
 
     if (issues.length === 0) {
-      console.log(`\n${chalk.green.bold('✨ No performance issues found!')}`)
+      logger.log(
+        `\n${consolaTermColors.green(consolaTermColors.bold('✨ No performance issues found!'))}`,
+      )
       return
     }
 
@@ -47,21 +65,29 @@ export class ConsoleReporter {
     const warnings = issues.filter(i => i.severity === 'warning')
 
     if (critical.length > 0) {
-      console.log(`\n${chalk.bold.red('🔴 Critical Issues')}`)
-      console.log(chalk.gray('─'.repeat(60)))
+      logger.log(`\n${consolaTermColors.red(consolaTermColors.bold('🔴 Critical Issues'))}`)
+      logger.log(consolaTermColors.gray('─'.repeat(60)))
       this.printIssueList(critical.slice(0, 5)) // Show top 5
       if (critical.length > 5) {
-        console.log(chalk.gray(`  ... and ${critical.length - 5} more critical issues\n`))
+        logger.log(
+          consolaTermColors.gray(
+            `  ... and ${critical.length - 5} more critical issues\n`,
+          ),
+        )
       }
     }
 
     if (warnings.length > 0 && critical.length < 5) {
-      console.log(`\n${chalk.bold.yellow('⚠️  Warnings')}`)
-      console.log(chalk.gray('─'.repeat(60)))
+      logger.log(`\n${consolaTermColors.yellow(consolaTermColors.bold('⚠️  Warnings'))}`)
+      logger.log(consolaTermColors.gray('─'.repeat(60)))
       const remaining = 5 - critical.length
       this.printIssueList(warnings.slice(0, remaining))
       if (warnings.length > remaining) {
-        console.log(chalk.gray(`  ... and ${warnings.length - remaining} more warnings\n`))
+        logger.log(
+          consolaTermColors.gray(
+            `  ... and ${warnings.length - remaining} more warnings\n`,
+          ),
+        )
       }
     }
   }
@@ -69,106 +95,159 @@ export class ConsoleReporter {
   private printIssueList(issues: Issue[]): void {
     for (const issue of issues) {
       const icon = this.getIssueIcon(issue.category)
-      const severity = issue.severity === 'critical' ? chalk.red('CRITICAL') : chalk.yellow('WARNING')
+      const severity
+        = issue.severity === 'critical'
+          ? consolaTermColors.red('CRITICAL')
+          : consolaTermColors.yellow('WARNING')
 
-      console.log(`\n  ${icon} ${severity}: ${chalk.white(issue.message)}`)
-      console.log(`     ${chalk.gray(issue.location.file)}:${chalk.cyan(issue.location.line)}`)
+      logger.log(
+        `\n  ${icon} ${severity}: ${consolaTermColors.white(issue.message)}`,
+      )
+      logger.log(
+        `     ${consolaTermColors.gray(issue.location.file)}:${consolaTermColors.cyan(String(issue.location.line))}`,
+      )
 
       if (issue.impact.estimate) {
-        console.log(`     Impact: ${chalk.yellow(issue.impact.estimate)}`)
+        logger.log(`     Impact: ${consolaTermColors.yellow(issue.impact.estimate)}`)
       }
 
       if (issue.impact.complexity) {
-        console.log(`     Complexity: ${chalk.magenta(issue.impact.complexity)}`)
+        logger.log(
+          `     Complexity: ${consolaTermColors.magenta(issue.impact.complexity)}`,
+        )
       }
 
       if (issue.suggestion) {
-        console.log(`     ${chalk.green('→')} ${chalk.white(issue.suggestion.fix)}`)
+        logger.log(
+          `     ${consolaTermColors.green('→')} ${consolaTermColors.white(issue.suggestion.fix)}`,
+        )
       }
     }
-    console.log('')
+    logger.log('')
   }
 
   private printMetrics(result: AnalysisResult): void {
     const { metrics } = result
 
-    console.log(`\n${chalk.bold('📈 Performance Metrics')}`)
-    console.log(chalk.gray('─'.repeat(60)))
+    logger.log(`\n${consolaTermColors.bold('📈 Performance Metrics')}`)
+    logger.log(consolaTermColors.gray('─'.repeat(60)))
 
     // CPU
     if (metrics.cpu.worstComplexity !== 'O(1)') {
-      console.log(`  ${chalk.red('CPU')}`)
-      console.log(`    Worst complexity:  ${chalk.magenta(metrics.cpu.worstComplexity)}`)
+      logger.log(`  ${consolaTermColors.red('CPU')}`)
+      logger.log(
+        `    Worst complexity:  ${consolaTermColors.magenta(metrics.cpu.worstComplexity)}`,
+      )
       if (metrics.cpu.hotspots.length > 0) {
-        console.log(`    Hotspots:          ${chalk.yellow(metrics.cpu.hotspots.length)} locations`)
+        logger.log(
+          `    Hotspots:          ${consolaTermColors.yellow(String(metrics.cpu.hotspots.length))} locations`,
+        )
       }
     }
 
     // Memory
     if (metrics.memory.leaks > 0 || metrics.memory.bloatLevel !== 'low') {
-      console.log(`  ${chalk.yellow('Memory')}`)
-      console.log(`    Est. baseline:     ${chalk.white(metrics.memory.estimatedBaseline)}`)
+      logger.log(`  ${consolaTermColors.yellow('Memory')}`)
+      logger.log(
+        `    Est. baseline:     ${consolaTermColors.white(metrics.memory.estimatedBaseline)}`,
+      )
       if (metrics.memory.leaks > 0) {
-        console.log(`    Memory leaks:      ${chalk.red(metrics.memory.leaks)}`)
+        logger.log(
+          `    Memory leaks:      ${consolaTermColors.red(String(metrics.memory.leaks))}`,
+        )
       }
-      console.log(`    Bloat level:       ${this.getBloatColor(metrics.memory.bloatLevel)}`)
+      logger.log(
+        `    Bloat level:       ${this.getBloatColor(metrics.memory.bloatLevel)}`,
+      )
     }
 
     // Bundle
     if (metrics.bundle.potentialSavings > 0) {
-      console.log(`  ${chalk.blue('Bundle')}`)
-      console.log(`    Current size:      ${chalk.white(this.formatBytes(metrics.bundle.size))}`)
-      console.log(`    Potential savings: ${chalk.green(this.formatBytes(metrics.bundle.potentialSavings))}`)
+      logger.log(`  ${consolaTermColors.blue('Bundle')}`)
+      logger.log(
+        `    Current size:      ${consolaTermColors.white(this.formatBytes(metrics.bundle.size))}`,
+      )
+      logger.log(
+        `    Potential savings: ${consolaTermColors.green(this.formatBytes(metrics.bundle.potentialSavings))}`,
+      )
       if (metrics.bundle.heavyDeps.length > 0) {
-        console.log(`    Heavy deps:        ${chalk.yellow(metrics.bundle.heavyDeps.join(', '))}`)
+        logger.log(
+          `    Heavy deps:        ${consolaTermColors.yellow(metrics.bundle.heavyDeps.join(', '))}`,
+        )
       }
     }
 
     // I/O
     if (metrics.io.blockingOps > 0 || metrics.io.waterfalls > 0) {
-      console.log(`  ${chalk.cyan('I/O')}`)
+      logger.log(`  ${consolaTermColors.cyan('I/O')}`)
       if (metrics.io.blockingOps > 0) {
-        console.log(`    Blocking ops:      ${chalk.red(metrics.io.blockingOps)}`)
+        logger.log(
+          `    Blocking ops:      ${consolaTermColors.red(String(metrics.io.blockingOps))}`,
+        )
       }
       if (metrics.io.waterfalls > 0) {
-        console.log(`    Waterfalls:        ${chalk.yellow(metrics.io.waterfalls)}`)
+        logger.log(
+          `    Waterfalls:        ${consolaTermColors.yellow(String(metrics.io.waterfalls))}`,
+        )
       }
     }
   }
 
   private printFooter(result: AnalysisResult): void {
-    console.log(`\n${chalk.gray('─'.repeat(60))}`)
+    logger.log(`\n${consolaTermColors.gray('─'.repeat(60))}`)
 
     const { summary } = result
 
     if (summary.critical > 0) {
-      console.log(chalk.yellow('\n💡 Quick wins:'))
-      console.log(chalk.gray('  1. Fix critical O(n²) loops → use Map/Set for lookups'))
-      console.log(chalk.gray('  2. Replace sync file operations → use async versions'))
-      console.log(chalk.gray('  3. Clean up memory leaks → add proper cleanup'))
+      logger.log(consolaTermColors.yellow('\n💡 Quick wins:'))
+      logger.log(
+        consolaTermColors.gray(
+          '  1. Fix critical O(n²) loops → use Map/Set for lookups',
+        ),
+      )
+      logger.log(
+        consolaTermColors.gray(
+          '  2. Replace sync file operations → use async versions',
+        ),
+      )
+      logger.log(
+        consolaTermColors.gray('  3. Clean up memory leaks → add proper cleanup'),
+      )
     }
     else if (summary.warnings > 0) {
-      console.log(chalk.green('\n✨ Good job! Only minor optimizations remain'))
+      logger.log(
+        consolaTermColors.green('\n✨ Good job! Only minor optimizations remain'),
+      )
     }
     else {
-      console.log(chalk.green.bold('\n🎉 Perfect! No performance issues detected'))
+      logger.log(
+        consolaTermColors.green(
+          consolaTermColors.bold('\n🎉 Perfect! No performance issues detected'),
+        ),
+      )
     }
 
-    console.log(chalk.gray('\n  Run with --json for detailed JSON output'))
-    console.log(chalk.gray('  Run with --html for interactive HTML report'))
-    console.log('')
+    logger.log(
+      consolaTermColors.gray('\n  Run with --json for detailed JSON output'),
+    )
+    logger.log(
+      consolaTermColors.gray('  Run with --html for interactive HTML report'),
+    )
+    logger.log('')
   }
 
   private getScoreColor(score: number) {
+    const value = String(score)
+
     if (score >= 90)
-      return chalk.green.bold
+      return consolaTermColors.green(consolaTermColors.bold(value))
     if (score >= 80)
-      return chalk.cyan.bold
+      return consolaTermColors.cyan(consolaTermColors.bold(value))
     if (score >= 70)
-      return chalk.yellow.bold
+      return consolaTermColors.yellow(consolaTermColors.bold(value))
     if (score >= 60)
-      return chalk.orange.bold
-    return chalk.red.bold
+      return consolaTermColors.bold(termColors.orange(value))
+    return consolaTermColors.red(consolaTermColors.bold(value))
   }
 
   private getGradeEmoji(grade: string): string {
@@ -178,10 +257,10 @@ export class ConsoleReporter {
 
   private getIssueColor(count: number, value: number) {
     if (count === 0)
-      return chalk.green(value)
+      return consolaTermColors.green(String(value))
     if (count < 5)
-      return chalk.yellow(value)
-    return chalk.red(value)
+      return consolaTermColors.yellow(String(value))
+    return consolaTermColors.red(String(value))
   }
 
   private getIssueIcon(category: string): string {
@@ -197,10 +276,10 @@ export class ConsoleReporter {
 
   private getBloatColor(level: string): string {
     if (level === 'low')
-      return chalk.green(level)
+      return consolaTermColors.green(level)
     if (level === 'medium')
-      return chalk.yellow(level)
-    return chalk.red(level)
+      return consolaTermColors.yellow(level)
+    return consolaTermColors.red(level)
   }
 
   private formatBytes(bytes: number): string {

@@ -1,16 +1,17 @@
 import type { AnalysisResult } from '../types.js'
 import { writeFileSync } from 'node:fs'
 import open from 'open'
+import { logger } from '../utils/logger.js'
 
 export class HtmlReporter {
   async report(result: AnalysisResult, outputPath: string, autoOpen = true): Promise<void> {
     const html = this.generateHtml(result)
     writeFileSync(outputPath, html, 'utf-8')
 
-    console.log(`\n✅ HTML report saved to: ${outputPath}`)
+    logger.log(`\n✅ HTML report saved to: ${outputPath}`)
 
     if (autoOpen) {
-      console.log('🌐 Opening in browser...\n')
+      logger.log('🌐 Opening in browser...\n')
       await open(outputPath)
     }
   }
