@@ -1,7 +1,7 @@
 {
   "name": "eslint-plugin-ceviz",
   "type": "module",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "description": "ESLint plugin for Ceviz performance analysis",
   "author": "productdevbook",
   "license": "MIT",
