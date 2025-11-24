@@ -3,6 +3,7 @@ import type { CevizConfig, CevizPlugin, PluginContext, ProjectContext, Reporter,
 import { resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { createHooks } from 'hookable'
+import { logger } from './utils/logger.js'
 
 export interface CevizHooks {
   'plugin:loading': (pluginName: string) => void
@@ -61,14 +62,14 @@ export class PluginLoader {
       const plugin = module.default || module
 
       if (!this.isValidPlugin(plugin)) {
-        console.warn(`⚠️  Invalid plugin: ${pluginPath}`)
+        logger.warn(`⚠️  Invalid plugin: ${pluginPath}`)
         return
       }
 
       await this.registerPlugin(plugin, config, projectContext)
     }
     catch (error) {
-      console.error(`❌ Failed to load plugin: ${pluginPath}`, error)
+      logger.error(`❌ Failed to load plugin: ${pluginPath}`, error)
     }
   }
 
@@ -106,7 +107,7 @@ export class PluginLoader {
 
     this.plugins.push(plugin)
     await this.hooks.callHook('plugin:loaded', plugin)
-    console.log(`✅ Plugin loaded: ${plugin.name}${plugin.version ? ` v${plugin.version}` : ''}`)
+    logger.log(`✅ Plugin loaded: ${plugin.name}${plugin.version ? ` v${plugin.version}` : ''}`)
   }
 
   private isValidPlugin(plugin: any): plugin is CevizPlugin {
@@ -115,7 +116,7 @@ export class PluginLoader {
 
   private addRule(rule: Rule): void {
     if (this.rules.find(r => r.id === rule.id)) {
-      console.warn(`⚠️  Rule already exists: ${rule.id}, skipping...`)
+      logger.warn(`⚠️  Rule already exists: ${rule.id}, skipping...`)
       return
     }
     this.rules.push(rule)
@@ -124,7 +125,7 @@ export class PluginLoader {
 
   private addReporter(reporter: Reporter): void {
     if (this.reporters.find(r => r.name === reporter.name)) {
-      console.warn(`⚠️  Reporter already exists: ${reporter.name}, skipping...`)
+      logger.warn(`⚠️  Reporter already exists: ${reporter.name}, skipping...`)
       return
     }
     this.reporters.push(reporter)
